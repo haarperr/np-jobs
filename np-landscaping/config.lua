@@ -39,7 +39,7 @@ end
 Config.zones = {
 	{
 		id = 'graveyard',
-		zoneType = 'poly',
+		type = 'poly',
 		minZ = 38.964504241943,
 		maxZ = 67.078857421875,
 		coords = {
@@ -82,7 +82,7 @@ Config.zones = {
 	},
 	{
 		id = 'western_skatepark',
-		zoneType = 'poly',
+		type = 'poly',
 		minZ = 15.405848503113,
 		maxZ = 27.727514266968,
 		coords = {
@@ -112,7 +112,7 @@ Config.zones = {
 	},
 	{
 		id = 'northern_golfcourse',
-		zoneType = 'poly',
+		type = 'poly',
 		minZ = 37.74352645874,
 		maxZ = 67.588729858398,
 		coords = {
@@ -178,7 +178,7 @@ Config.zones = {
 	},
 	{
 		id = 'vinewood_mansion',
-		zoneType = 'poly',
+		type = 'poly',
 		minZ = 226.62889099121,
 		maxZ = 236.91148376465,
 		coords = {
@@ -217,7 +217,7 @@ Config.zones = {
 	},
 	{
 		id = 'downtown_park',
-		zoneType = 'poly',
+		type = 'poly',
 		minZ = 30.62921333313,
 		maxZ = 40.416103363037,
 		coords = {
@@ -240,7 +240,7 @@ Config.zones = {
 	},
 	{
 		id = 'city_hall',
-		zoneType = 'poly',
+		type = 'poly',
 		minZ = 30.62921333313,
 		maxZ = 40.416103363037,
 		coords = {
@@ -280,7 +280,7 @@ Config.zones = {
 	},
 	{
 		id = 'legion_square',
-		zoneType = 'poly',
+		type = 'poly',
 		minZ = 29.158296585083,
 		maxZ = 31.021266937256,
 		coords = {
@@ -307,7 +307,7 @@ Config.zones = {
 	},
 	{
 		id = 'mirrorpark_skatepark',
-		zoneType = 'poly',
+		type = 'poly',
 		minZ = 45.384662628174,
 		maxZ = 74.772308349609,
 		coords = {
@@ -352,7 +352,7 @@ Config.zones = {
 	},
 	{
 		id = 'mirrorpark_lake',
-		zoneType = 'poly',
+		type = 'poly',
 		minZ = 57.318111419678,
 		maxZ = 64.909599304199,
 		coords = {
@@ -396,7 +396,7 @@ Config.zones = {
 	},
 	{
 		id = 'paleto_rest_area',
-		zoneType = 'poly',
+		type = 'poly',
 		minZ = 8.3955898284912,
 		maxZ = 24.054468154907,
 		coords = {
@@ -431,7 +431,7 @@ Config.zones = {
 	},
 	{
 		id = 'north_vinewood_park',
-		zoneType = 'poly',
+		type = 'poly',
 		minZ = 199.55363464355,
 		maxZ = 220.20584106445,
 		coords = {
@@ -463,7 +463,7 @@ Config.zones = {
 	},
 	{
 		id = 'cottage_park',
-		zoneType = 'poly',
+		type = 'poly',
 		minZ = 66.502510070801,
 		maxZ = 72.464233398438,
 		coords = {
@@ -501,7 +501,7 @@ Config.zones = {
 	},
 	{
 		id = 'court_house',
-		zoneType = 'poly',
+		type = 'poly',
 		minZ = 41.063034057617,
 		maxZ = 45.24654006958,
 		coords = {
@@ -537,9 +537,9 @@ Config.zones = {
 	}
 	-- {
 	-- 	id = 'zone_1',
-	-- 	zoneType = 'box',
+	-- 	type = 'box',
 	-- 	zoneLength = 87,
-	-- 	zoneWidth = 90,
+	-- 	width = 90,
 	-- 	coords = vector3(0.0, 0.0, 0.0),
 	-- 	activityLimit = Config.getActivityLimit(),
 	-- 	activities = {

@@ -43,8 +43,8 @@ end
 -- Task 0 : Job Pickup & Drop-off
 Config.foreman = {
 	id = 'foreman',
-	zoneSize = 25,
-	object = nil,
+	type = 'circle',
+	radius = 25,
 	coords = vector3(0.0, 0.0, 0.0),
 	activities = {
 		{ id = 'get_truck', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
@@ -55,7 +55,7 @@ Config.foreman = {
 Config.farms = {
 	{
 		id = 'grapeseed_farm',
-		zoneType = 'poly',
+		type = 'poly',
 		minZ = 40.638362884521,
 		maxZ = 53.635459899902,
 		coords = {
@@ -86,7 +86,7 @@ Config.farms = {
 	},
 	{
 		id = 'grapeseed_farm_2',
-		zoneType = 'poly',
+		type = 'poly',
 		minZ = 32.586009979248,
 		maxZ = 38.098377227783,
 		coords = {
@@ -112,7 +112,7 @@ Config.farms = {
 	},
 	{
 		id = 'grapeseed_farm_3',
-		zoneType = 'poly',
+		type = 'poly',
 		minZ = 40.7724609375,
 		maxZ = 45.687217712402,
 		coords = {
@@ -133,7 +133,7 @@ Config.farms = {
 	},
 	{
 		id = 'grapeseed_farm_4',
-		zoneType = 'poly',
+		type = 'poly',
 		minZ = 45.580806732178,
 		maxZ = 47.347198486328,
 		coords = {
@@ -154,7 +154,7 @@ Config.farms = {
 	},
 	{
 		id = 'paleto_farm',
-		zoneType = 'poly',
+		type = 'poly',
 		minZ = 25.097793579102,
 		maxZ = 31.911756515503,
 		coords = {
@@ -176,7 +176,7 @@ Config.farms = {
 Config.butchers = {
 	{
 		id = 'slaughter_house',
-		zoneType = 'poly',
+		type = 'poly',
 		minZ = 30.297485351562,
 		maxZ = 31.023944854736,
 		coords = {
@@ -198,7 +198,7 @@ Config.butchers = {
 	},
 	{
 		id = 'cluck_n_bell',
-		zoneType = 'poly',
+		type = 'poly',
 		minZ = 31.102109909058,
 		maxZ = 32.005264282227,
 		coords = {

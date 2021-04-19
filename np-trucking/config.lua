@@ -43,7 +43,9 @@ end
 Config.zones = {
 	{
 		id = 'zone_1',
-		zoneSize = 50,
+		type = 'box',
+		length = 20,
+		width = 20,
 		coords = vector3(0.0, 0.0, 0.0),
 		activityLimit = Config.getActivityLimit(),
 		activities = {
@@ -54,7 +56,9 @@ Config.zones = {
 	},
 	{
 		id = 'zone_2',
-		zoneSize = 50,
+		type = 'box',
+		length = 20,
+		width = 20,
 		coords = vector3(0.0, 0.0, 0.0),
 		activityLimit = Config.getActivityLimit(),
 		activities = {
@@ -65,7 +69,9 @@ Config.zones = {
 	},
 	{
 		id = 'zone_3',
-		zoneSize = 50,
+		type = 'box',
+		length = 20,
+		width = 20,
 		coords = vector3(0.0, 0.0, 0.0),
 		activityLimit = Config.getActivityLimit(),
 		activities = {
@@ -75,9 +81,16 @@ Config.zones = {
 		},
 	},
 	{
-		id = 'zone_4',
-		zoneSize = 50,
-		coords = vector3(0.0, 0.0, 0.0),
+		id = 'zone4',
+		type = 'poly',
+		minZ = 41.063034057617,
+		maxZ = 45.24654006958,
+		coords = {
+			vector2(196.32427978516, -355.64190673828),
+			vector2(222.59237670898, -364.03707885742),
+			vector2(242.06045532227, -370.16152954102),
+			vector2(266.81866455078, -379.05453491211)
+		},
 		activityLimit = Config.getActivityLimit(),
 		activities = {
 			{ id = 'activity_1', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },

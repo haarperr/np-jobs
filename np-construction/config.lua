@@ -47,9 +47,9 @@ end
 Config.zones = {
 	{
 		id = 'paleto_wholefoods',
-		zoneType = 'box',
-		zoneLength = 87,
-		zoneWidth = 90,
+		type = 'box',
+		length = 87,
+		width = 90,
 		coords = vector3(74.04, 6535.2, 31.39),
 		activityLimit = Config.getActivityLimit(),
 		activities = {
@@ -60,9 +60,9 @@ Config.zones = {
 	},
 	{
 		id = 'paleto_house',
-		zoneType = 'box',
-		zoneLength = 36.2,
-		zoneWidth = 45.6,
+		type = 'box',
+		length = 36.2,
+		width = 45.6,
 		coords = vector3(-327.41, 6303.54, 35.65),
 		activityLimit = Config.getActivityLimit(),
 		activities = {
@@ -73,9 +73,9 @@ Config.zones = {
 	},
 	{
 		id = 'paleto_clucking_bell',
-		zoneType = 'box',
-		zoneLength = 55.0,
-		zoneWidth = 78.2,
+		type = 'box',
+		length = 55.0,
+		width = 78.2,
 		coords = vector3(133.83, 6442.29, 31.2),
 		activityLimit = Config.getActivityLimit(),
 		activities = {
@@ -86,7 +86,7 @@ Config.zones = {
 	},
 	{
 		id = 'pdm_skyscraper',
-		zoneType = 'poly',
+		type = 'poly',
 		minZ = 22.859148025513,
 		maxZ = 29.39026260376,
 		coords = {
@@ -111,9 +111,9 @@ Config.zones = {
 	},
 	{
 		id = 'elburro_heights_house',
-		zoneType = 'box',
-		zoneLength = 62.8,
-		zoneWidth = 22.4,
+		type = 'box',
+		length = 62.8,
+		width = 22.4,
 		coords = vector3(1285.75, -1765.23, 51.78),
 		activityLimit = Config.getActivityLimit(),
 		activities = {
@@ -124,7 +124,7 @@ Config.zones = {
 	},
 	{
 		id = 'little_seoul',
-		zoneType = 'poly',
+		type = 'poly',
 		minZ = 22.699016571045,
 		maxZ = 30.910482406616,
 		coords = {
@@ -153,7 +153,7 @@ Config.zones = {
 	},
 	{
 		id = 'vespucci_canals_house',
-		zoneType = 'poly',
+		type = 'poly',
 		minZ = 2.1501624584198,
 		maxZ = 2.8792240619659,
 		coords = {
@@ -173,9 +173,9 @@ Config.zones = {
 	},
 	{
 		id = 'west_vinewood_hills_house',
-		zoneType = 'box',
-		zoneLength = 48.0,
-		zoneWidth = 62.6,
+		type = 'box',
+		length = 48.0,
+		width = 62.6,
 		coords = vector3(-2008.5, 547.96, 110.65),
 		activityLimit = Config.getActivityLimit(),
 		activities = {
@@ -186,7 +186,7 @@ Config.zones = {
 	},
 	{
 		id = 'rockford_hills_house',
-		zoneType = 'poly',
+		type = 'poly',
 		minZ = 73.092056274414,
 		maxZ = 87.158027648926,
 		coords = {
@@ -215,7 +215,7 @@ Config.zones = {
 	},
 	{
 		id = 'north_vinewood_house',
-		zoneType = 'poly',
+		type = 'poly',
 		minZ = 143.23245239258,
 		maxZ = 149.25944519043,
 		coords = {
@@ -235,7 +235,7 @@ Config.zones = {
 	},
 	{
 		id = 'alta_skyscraper',
-		zoneType = 'poly',
+		type = 'poly',
 		minZ = 36.598949432373,
 		maxZ = 49.670181274414,
 		coords = {
