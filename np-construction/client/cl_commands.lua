@@ -22,7 +22,7 @@ RegisterCommand("stop_construction", function(source, args)
 end, false)
   
   
--- This is was here for testing to give me a pickaxe to mine (can remove this)
+-- This is was here for testing to give player a tool to use (can remove this)
 -- RegisterCommand("givepickaxe", function(source, args)
 --   local playerServerId = GetPlayerServerId(PlayerId())
 --   exports["np-activities"]:giveInventoryItem(playerServerId, Config.required_item, 5)

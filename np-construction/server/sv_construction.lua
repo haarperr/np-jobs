@@ -31,7 +31,7 @@ AddEventHandler("np-construction:assignZone", function()
 		return print("You have completed max amount of zones this run")	 -- Notify User with UI
 	end
 
-	-- Loop through our zones and player mined zones and remove the ones theyve done
+	-- Loop through our zones and remove the ones theyve done
 	if playersZonesCompleted[source] ~= nil then
 		for index, zone in pairs(zoneList) do
 			for _, playerZoneDone in pairs (playersZonesCompleted[source]) do
@@ -47,12 +47,11 @@ AddEventHandler("np-construction:assignZone", function()
 	-- Check if their is any zones the player can do (edge case)
 	if #zoneList == 0 then
 		TriggerEvent("np-construction:completedRun")
-		return print("You have no more zones you can mine at this time.") -- Notify User with UI
+		return print("You have no more zones you can work at this time.") -- Notify User with UI
 	end
 
 	local randomZoneIndex = math.random(#zoneList)
 	local randomZone = zoneList[randomZoneIndex]
-	-- local recentlyMined = ZoneMinedRecently(randomZone, playersZonesCompleted[source], source)
 
 	playersConstructingTotal[source] = nil -- Set to nil again once we move to another zone so then we can track that zone 
 	TriggerClientEvent("np-construction:assignedZone", source, randomZone)
@@ -61,7 +60,7 @@ end)
 -- Called when the player completed their assigned amount of zones
 RegisterServerEvent("np-construction:completedRun")
 AddEventHandler("np-construction:completedRun", function(src)
-	playersConstructingTotal[src] = nil -- Remove how many rocks they mined
+	playersConstructingTotal[src] = nil -- Remove how many activities they completed
 	playersZonesCompleted[src] = nil -- Remove them from zones completed so when they strart the job again after a "cooldown" its backto default
 	TriggerClientEvent("np-construction:stopConstruction", src) -- Now lets tell client theyre not assigned a zone and reset their variables
 end)
