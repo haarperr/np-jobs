@@ -87,6 +87,8 @@ Config.zones = {
 	{
 		id = 'pdm_skyscraper',
 		zoneType = 'poly',
+		minZ = 22.859148025513,
+		maxZ = 29.39026260376,
 		coords = {
 			vector2(-81.278228759766, -1023.1381225586),
 			vector2(-105.77919769287, -1085.3673095703),
@@ -123,6 +125,8 @@ Config.zones = {
 	{
 		id = 'little_seoul',
 		zoneType = 'poly',
+		minZ = 22.699016571045,
+		maxZ = 30.910482406616,
 		coords = {
 			vector2(-524.95336914062, -978.10595703125),
 			vector2(-520.99920654297, -955.76379394531),
@@ -150,6 +154,8 @@ Config.zones = {
 	{
 		id = 'vespucci_canals_house',
 		zoneType = 'poly',
+		minZ = 2.1501624584198,
+		maxZ = 2.8792240619659,
 		coords = {
 			vector2(-1122.2845458984, -938.03149414062),
 			vector2(-1118.4185791016, -941.22991943359),
@@ -181,6 +187,8 @@ Config.zones = {
 	{
 		id = 'rockford_hills_house',
 		zoneType = 'poly',
+		minZ = 73.092056274414,
+		maxZ = 87.158027648926,
 		coords = {
 			vector2(-883.5185546875, 408.04168701172),
 			vector2(-895.01873779297, 403.55014038086),
@@ -208,6 +216,8 @@ Config.zones = {
 	{
 		id = 'north_vinewood_house',
 		zoneType = 'poly',
+		minZ = 143.23245239258,
+		maxZ = 149.25944519043,
 		coords = {
 			vector2(-778.21942138672, 709.63452148438),
 			vector2(-764.22674560547, 715.84973144531),
@@ -226,6 +236,8 @@ Config.zones = {
 	{
 		id = 'alta_skyscraper',
 		zoneType = 'poly',
+		minZ = 36.598949432373,
+		maxZ = 49.670181274414,
 		coords = {
 			vector2(41.710205078125, -307.36505126953),
 			vector2(83.869720458984, -322.6711730957),
