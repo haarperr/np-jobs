@@ -26,6 +26,16 @@ Config.zoneLimit = 2 -- (integer) Number of zones to complete before the "task" 
 Config.useRandActivityLimit = true -- (boolean) Use a ranom activity limit at each job site?
 Config.minActivityLimit = 2 -- (integer) Minimum number of activities required to complete a zone || NOTE: if useRandActivityLimit = false, this value becomes the default activityLimit for each zone
 Config.maxActivityLimit = 5 -- (integer) Maximum number of activities required to complete a zone
+Config.payment = { -- job completion payment settings
+	cash = {
+		minPayment = 100, -- (integer) min amount of cash the job can pay out to each player
+		maxPayment = 200, -- (integer) max amount of cash the job can pay out to each player
+	},
+	material = {
+		minPayment = 30, -- (integer) min amount of material items the job can pay out to each player
+		maxPayment = 60, -- (integer) max amount of material items the job can pay out to each player
+	},
+}
 
 -- Custom Function to generate activityLimit for each zone
 Config.getActivityLimit = function()
