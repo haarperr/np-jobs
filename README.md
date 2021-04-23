@@ -1,5 +1,5 @@
 # NoPixelJobs
- Set of jobs coded for use within NoPixel 3.0
+A set of jobs coded for use within NoPixel 3.0
 
 
 NoPixel Activities List for interested Code Contributors
@@ -42,7 +42,7 @@ Call this before starting the activity on the client to ensure they can start.
 -- returns bool
 
 Call this when activity in progress
-- :activityInProgress(:activityName, :playerServerId)
+- :activityInProgress(:activityName, :playerServerId, :timeToComplete)
 -- returns bool
 
 Call this when an activity completes, fails, or is abandoned

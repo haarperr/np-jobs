@@ -13,16 +13,14 @@ function ZoneConstructedRecently(targetZone, playerConstructedZones, source)
 end
 
 
-function resetZoneActivities()
+function resetZoneTasks()
 	print("Checking if any activities need to be reset...")
 	for _, zone in pairs(Config.zones) do
-		for _, activity in pairs(zone.activities) do
-
-			if not activity.isBeingConstructed and activity.isConstructed then
-				activity.isConstructed = false
-				activity.beingConstructedBy = nil
+		for _, task in pairs(zone.tasks) do
+			if not task.isBeingConstructed and task.isConstructed then
+				task.isConstructed = false
+				task.beingConstructedBy = nil
 			end
-
 		end
 	end
 end

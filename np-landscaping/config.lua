@@ -1,8 +1,12 @@
 Config = {}
 
 Config.enabled = true -- (boolean) is the job enabled?
+Config.actviityName = 'activity_landscaping'
 Config.jobName = 'Landscaping'
 Config.initMessage = 'Loading: Landscaping' -- (string) text to print
+
+-- Enable NoPixel Exports
+Config.useNoPixelExports = false
 
 -- Set required items for player to complete job tasks
 Config.requireMultipleItems = false -- (boolean) does this job require multiple items?
@@ -22,9 +26,9 @@ end
 --
 Config.maxGroupSize = 2 -- (integer) Maximum players allowed in the job center group for this job
 Config.zoneLimit = 2 -- (integer) Number of zones to complete before the "task" is flagged as "completed"
-Config.useRandActivityLimit = true -- (boolean) Use a ranom activity limit at each job site?
-Config.minActivityLimit = 2 -- (integer) Minimum number of activities required to complete a zone || NOTE: if useRandActivityLimit = false, this value becomes the default activityLimit for each zone
-Config.maxActivityLimit = 5 -- (integer) Maximum number of activities required to complete a zone
+Config.useRandTaskLimit = true -- (boolean) Use a ranom task limit at each job site?
+Config.minTaskLimit = 2 -- (integer) Minimum number of tasks required to complete a zone || NOTE: if useRandTaskLimit = false, this value becomes the default taskLimit for each zone
+Config.maxTaskLimit = 5 -- (integer) Maximum number of tasks required to complete a zone
 Config.payment = { -- job completion payment settings
 	cash = {
 		minPayment = 100, -- (integer) min amount of cash the job can pay out to each player
@@ -36,12 +40,12 @@ Config.payment = { -- job completion payment settings
 	},
 }
 
--- Custom Function to generate activityLimit for each zone
-Config.getActivityLimit = function()
-	if Config.useRandActivityLimit do
-		Config.activityLimit = random(Config.minActivityLimit, Config.maxActivityLimit) -- (integer) set random activityLimit between Config.minActivityLimit & Config.maxActivityLimit
+-- Custom Function to generate taskLimit for each zone
+Config.getTaskLimit = function()
+	if Config.useRandTaskLimit do
+		Config.taskLimit = random(Config.minTaskLimit, Config.maxTaskLimit) -- (integer) set random taskLimit between Config.minTaskLimit & Config.maxTaskLimit
 	else
-		Config.activityLimit = Config.minActivityLimit -- (integer) uses the minActivityLimit param above
+		Config.taskLimit = Config.minTaskLimit -- (integer) uses the minTaskLimit param above
 	end
 end
 
@@ -49,6 +53,8 @@ end
 Config.zones = {
 	{
 		id = 'graveyard',
+		name = 'Graveyard',
+		active = true,
 		type = 'poly',
 		minZ = 38.964504241943,
 		maxZ = 67.078857421875,
@@ -83,8 +89,8 @@ Config.zones = {
 			vector2(-1837.9727783203, -239.80389404297),
 			vector2(-1848.7563476562, -225.28588867188)
 		},
-		activityLimit = Config.getActivityLimit(),
-		activities = {
+		taskLimit = Config.getTaskLimit(),
+		tasks = {
 			{ id = 'activity_1', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
 			{ id = 'activity_2', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
 			{ id = 'activity_3', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil }
@@ -92,6 +98,8 @@ Config.zones = {
 	},
 	{
 		id = 'western_skatepark',
+		name = 'Western Skatepark',
+		active = true,
 		type = 'poly',
 		minZ = 15.405848503113,
 		maxZ = 27.727514266968,
@@ -113,8 +121,8 @@ Config.zones = {
 			vector2(-950.41619873047, -824.70965576172),
 			vector2(-970.03515625, -817.11120605469)
 		},
-		activityLimit = Config.getActivityLimit(),
-		activities = {
+		taskLimit = Config.getTaskLimit(),
+		tasks = {
 			{ id = 'activity_1', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
 			{ id = 'activity_2', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
 			{ id = 'activity_3', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil }
@@ -122,6 +130,8 @@ Config.zones = {
 	},
 	{
 		id = 'northern_golfcourse',
+		name = 'Northern Golf Course',
+		active = true,
 		type = 'poly',
 		minZ = 37.74352645874,
 		maxZ = 67.588729858398,
@@ -179,8 +189,8 @@ Config.zones = {
 			vector2(-913.62451171875, -81.872406005859),
 			vector2(-903.31396484375, -102.51031494141)
 		},
-		activityLimit = Config.getActivityLimit(),
-		activities = {
+		taskLimit = Config.getTaskLimit(),
+		tasks = {
 			{ id = 'activity_1', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
 			{ id = 'activity_2', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
 			{ id = 'activity_3', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil }
@@ -188,6 +198,8 @@ Config.zones = {
 	},
 	{
 		id = 'vinewood_mansion',
+		name = 'Vinewood Mansion',
+		active = true,
 		type = 'poly',
 		minZ = 226.62889099121,
 		maxZ = 236.91148376465,
@@ -218,8 +230,8 @@ Config.zones = {
 			vector2(-30.11619758606, 925.35424804688),
 			vector2(-65.847320556641, 917.98529052734)
 		},
-		activityLimit = Config.getActivityLimit(),
-		activities = {
+		taskLimit = Config.getTaskLimit(),
+		tasks = {
 			{ id = 'activity_1', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
 			{ id = 'activity_2', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
 			{ id = 'activity_3', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil }
@@ -227,6 +239,8 @@ Config.zones = {
 	},
 	{
 		id = 'downtown_park',
+		name = 'Downtown Park',
+		active = true,
 		type = 'poly',
 		minZ = 30.62921333313,
 		maxZ = 40.416103363037,
@@ -241,8 +255,8 @@ Config.zones = {
 			vector2(-157.92115783691, -426.14440917969),
 			vector2(-140.46983337402, -370.3854675293)
 		},
-		activityLimit = Config.getActivityLimit(),
-		activities = {
+		taskLimit = Config.getTaskLimit(),
+		tasks = {
 			{ id = 'activity_1', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
 			{ id = 'activity_2', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
 			{ id = 'activity_3', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil }
@@ -250,6 +264,8 @@ Config.zones = {
 	},
 	{
 		id = 'city_hall',
+		name = 'City Hall',
+		active = true,
 		type = 'poly',
 		minZ = 30.62921333313,
 		maxZ = 40.416103363037,
@@ -281,8 +297,8 @@ Config.zones = {
 			vector2(-502.88317871094, -169.06524658203),
 			vector2(-503.10971069336, -175.3078918457)
 		},
-		activityLimit = Config.getActivityLimit(),
-		activities = {
+		taskLimit = Config.getTaskLimit(),
+		tasks = {
 			{ id = 'activity_1', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
 			{ id = 'activity_2', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
 			{ id = 'activity_3', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil }
@@ -290,6 +306,8 @@ Config.zones = {
 	},
 	{
 		id = 'legion_square',
+		name = 'Legion Square',
+		active = true,
 		type = 'poly',
 		minZ = 29.158296585083,
 		maxZ = 31.021266937256,
@@ -308,8 +326,8 @@ Config.zones = {
 			vector2(156.38381958008, -1007.9952392578),
 			vector2(152.73220825195, -1001.1463623047)
 		},
-		activityLimit = Config.getActivityLimit(),
-		activities = {
+		taskLimit = Config.getTaskLimit(),
+		tasks = {
 			{ id = 'activity_1', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
 			{ id = 'activity_2', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
 			{ id = 'activity_3', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil }
@@ -317,6 +335,8 @@ Config.zones = {
 	},
 	{
 		id = 'mirrorpark_skatepark',
+		name = 'Mirrorpark Skate & Soccer',
+		active = true,
 		type = 'poly',
 		minZ = 45.384662628174,
 		maxZ = 74.772308349609,
@@ -353,8 +373,8 @@ Config.zones = {
 			vector2(689.29388427734, -284.92965698242),
 			vector2(708.68090820312, -238.87832641602)
 		},
-		activityLimit = Config.getActivityLimit(),
-		activities = {
+		taskLimit = Config.getTaskLimit(),
+		tasks = {
 			{ id = 'activity_1', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
 			{ id = 'activity_2', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
 			{ id = 'activity_3', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil }
@@ -362,6 +382,8 @@ Config.zones = {
 	},
 	{
 		id = 'mirrorpark_lake',
+		name = 'Mirrorpark Lake',
+		active = true,
 		type = 'poly',
 		minZ = 57.318111419678,
 		maxZ = 64.909599304199,
@@ -397,8 +419,8 @@ Config.zones = {
 			vector2(1185.7911376953, -718.68316650391),
 			vector2(1187.2722167969, -741.96636962891)
 		},
-		activityLimit = Config.getActivityLimit(),
-		activities = {
+		taskLimit = Config.getTaskLimit(),
+		tasks = {
 			{ id = 'activity_1', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
 			{ id = 'activity_2', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
 			{ id = 'activity_3', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil }
@@ -406,6 +428,8 @@ Config.zones = {
 	},
 	{
 		id = 'paleto_rest_area',
+		name = 'Paleto Rest Stop',
+		active = true,
 		type = 'poly',
 		minZ = 8.3955898284912,
 		maxZ = 24.054468154907,
@@ -432,8 +456,8 @@ Config.zones = {
 			vector2(1594.7841796875, 6552.5776367188),
 			vector2(1601.0386962891, 6510.3559570312)
 		},
-		activityLimit = Config.getActivityLimit(),
-		activities = {
+		taskLimit = Config.getTaskLimit(),
+		tasks = {
 			{ id = 'activity_1', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
 			{ id = 'activity_2', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
 			{ id = 'activity_3', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil }
@@ -441,6 +465,8 @@ Config.zones = {
 	},
 	{
 		id = 'north_vinewood_park',
+		name = 'North Vinewood Park',
+		active = true,
 		type = 'poly',
 		minZ = 199.55363464355,
 		maxZ = 220.20584106445,
@@ -464,8 +490,8 @@ Config.zones = {
 			vector2(-778.45593261719, 902.9501953125),
 			vector2(-762.70361328125, 904.34527587891)
 		},
-		activityLimit = Config.getActivityLimit(),
-		activities = {
+		taskLimit = Config.getTaskLimit(),
+		tasks = {
 			{ id = 'activity_1', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
 			{ id = 'activity_2', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
 			{ id = 'activity_3', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil }
@@ -473,6 +499,8 @@ Config.zones = {
 	},
 	{
 		id = 'cottage_park',
+		name = 'Cottage Park',
+		active = true,
 		type = 'poly',
 		minZ = 66.502510070801,
 		maxZ = 72.464233398438,
@@ -502,8 +530,8 @@ Config.zones = {
 			vector2(-927.35467529297, 268.17944335938),
 			vector2(-930.93035888672, 265.23223876953)
 		},
-		activityLimit = Config.getActivityLimit(),
-		activities = {
+		taskLimit = Config.getTaskLimit(),
+		tasks = {
 			{ id = 'activity_1', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
 			{ id = 'activity_2', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
 			{ id = 'activity_3', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil }
@@ -511,6 +539,8 @@ Config.zones = {
 	},
 	{
 		id = 'court_house',
+		name = 'Court House',
+		active = true,
 		type = 'poly',
 		minZ = 41.063034057617,
 		maxZ = 45.24654006958,
@@ -538,8 +568,8 @@ Config.zones = {
 			vector2(170.81260681152, -415.99780273438),
 			vector2(175.55290222168, -403.09915161133)
 		},
-		activityLimit = Config.getActivityLimit(),
-		activities = {
+		taskLimit = Config.getTaskLimit(),
+		tasks = {
 			{ id = 'activity_1', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
 			{ id = 'activity_2', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
 			{ id = 'activity_3', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil }
@@ -547,12 +577,14 @@ Config.zones = {
 	}
 	-- {
 	-- 	id = 'zone_1',
+	-- 	name = 'Zone #1',
+	-- 	active = true,
 	-- 	type = 'box',
 	-- 	zoneLength = 87,
 	-- 	width = 90,
 	-- 	coords = vector3(0.0, 0.0, 0.0),
-	-- 	activityLimit = Config.getActivityLimit(),
-	-- 	activities = {
+	-- 	taskLimit = Config.getTaskLimit(),
+	-- 	tasks = {
 	-- 		{ id = 'activity_1', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
 	-- 		{ id = 'activity_2', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
 	-- 		{ id = 'activity_3', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },

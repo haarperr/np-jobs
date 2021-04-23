@@ -4,7 +4,7 @@ RegisterCommand("start_construction", function(source, args)
 	local playerServerId = GetPlayerServerId(PlayerId())
   
 	if Config.useNoPixelExports then
-		canDoActivity = exports["np-activities"]:canDoActivity("activity_construction", playerServerId)
+		canDoActivity = exports["np-activities"]:canDoActivity(Config.activityName, playerServerId)
 	else
 		canDoActivity = true
 	end
@@ -12,7 +12,7 @@ RegisterCommand("start_construction", function(source, args)
 	if canDoActivity then
 		TriggerServerEvent("np-construction:assignZone")
 	else
-		sendNotification("You cant do this job at this time.", playerServerId)
+		exports.functions:sendNotification("~r~You cant do this job at this time.", playerServerId)
 	end
 end, false)
 

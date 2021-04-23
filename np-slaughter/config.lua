@@ -1,8 +1,12 @@
 Config = {}
 
 Config.enabled = true -- show message
+Config.actviityName = 'activity_slaughter'
 Config.jobName = 'Slaughterhouse'
 Config.initMessage = 'Loading: Slaughterhouse' -- (string) text to print
+
+-- Enable NoPixel Exports
+Config.useNoPixelExports = false
 
 -- Set required items for player to complete job tasks
 Config.requireMultipleItems = false -- (boolean) does this job require multiple items?
@@ -23,9 +27,9 @@ end
 --
 Config.maxGroupSize = 4 -- (integer) Maximum players allowed in the job center group for this job
 Config.zoneLimit = 1 -- (integer) Number of zones to complete before the "task" is flagged as "completed"
-Config.useRandActivityLimit = false -- (boolean) Use a ranom activity limit at each job site?
-Config.minActivityLimit = 1 -- (integer) Minimum number of activities required to complete a zone || NOTE: if useRandActivityLimit = false, this value becomes the default activityLimit for each zone
-Config.maxActivityLimit = 1 -- (integer) Maximum number of activities required to complete a zone
+Config.useRandTaskLimit = true -- (boolean) Use a ranom task limit at each job site?
+Config.minTaskLimit = 2 -- (integer) Minimum number of tasks required to complete a zone || NOTE: if useRandTaskLimit = false, this value becomes the default taskLimit for each zone
+Config.maxTaskLimit = 5 -- (integer) Maximum number of tasks required to complete a zone
 Config.payment = { -- job completion payment settings
 	cash = {
 		minPayment = 100, -- (integer) min amount of cash the job can pay out to each player
@@ -37,12 +41,12 @@ Config.payment = { -- job completion payment settings
 	},
 }
 
--- Custom Function to generate activityLimit for each zone
-Config.getActivityLimit = function()
-	if Config.useRandActivityLimit do
-		Config.activityLimit = random(Config.minActivityLimit, Config.maxActivityLimit) -- (integer) set random activityLimit between Config.minActivityLimit & Config.maxActivityLimit
+-- Custom Function to generate taskLimit for each zone
+Config.getTaskLimit = function()
+	if Config.useRandTaskLimit do
+		Config.taskLimit = random(Config.minTaskLimit, Config.maxTaskLimit) -- (integer) set random taskLimit between Config.minTaskLimit & Config.maxTaskLimit
 	else
-		Config.activityLimit = Config.minActivityLimit -- (integer) uses the minActivityLimit param above
+		Config.taskLimit = Config.minTaskLimit -- (integer) uses the minTaskLimit param above
 	end
 end
 
@@ -53,6 +57,8 @@ end
 -- Task 0 : Job Pickup & Drop-off
 Config.foreman = {
 	id = 'foreman',
+	name = 'Foreman',
+	active = true,
 	type = 'circle',
 	radius = 25,
 	coords = vector3(0.0, 0.0, 0.0),
@@ -65,6 +71,8 @@ Config.foreman = {
 Config.farms = {
 	{
 		id = 'grapeseed_farm',
+		name = 'Grapeseed Farm #1',
+		active = true,
 		type = 'poly',
 		minZ = 40.638362884521,
 		maxZ = 53.635459899902,
@@ -87,8 +95,8 @@ Config.farms = {
 			vector2(1768.3558349609, 4923.9663085938),
 			vector2(1837.7462158203, 4983.5283203125)
 		},
-		activityLimit = Config.getActivityLimit(),
-		activities = {
+		taskLimit = Config.getTaskLimit(),
+		tasks = {
 			{ id = 'catch_chickens', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil, butcherId = 'cluck_n_bell', activityId = 'butcher_chickens' },
 			{ id = 'catch_pigs', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil, butcherId = 'slaughter_house', activityId = 'butcher_pigs' },
 			{ id = 'catch_cows', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil, butcherId = 'slaughter_house', activityId = 'butcher_cows' }
@@ -96,6 +104,8 @@ Config.farms = {
 	},
 	{
 		id = 'grapeseed_farm_2',
+		name = 'Grapeseed Farm #2',
+		active = true,
 		type = 'poly',
 		minZ = 32.586009979248,
 		maxZ = 38.098377227783,
@@ -113,8 +123,8 @@ Config.farms = {
 			vector2(2478.8095703125, 4799.6826171875),
 			vector2(2521.9948730469, 4773.4379882812)
 		},
-		activityLimit = Config.getActivityLimit(),
-		activities = {
+		taskLimit = Config.getTaskLimit(),
+		tasks = {
 			{ id = 'catch_chickens', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil, butcherId = 'cluck_n_bell', activityId = 'butcher_chickens' },
 			{ id = 'catch_pigs', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil, butcherId = 'slaughter_house', activityId = 'butcher_pigs' },
 			{ id = 'catch_cows', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil, butcherId = 'slaughter_house', activityId = 'butcher_cows' }
@@ -122,6 +132,8 @@ Config.farms = {
 	},
 	{
 		id = 'grapeseed_farm_3',
+		name = 'Grapeseed Farm #3',
+		active = true,
 		type = 'poly',
 		minZ = 40.7724609375,
 		maxZ = 45.687217712402,
@@ -134,8 +146,8 @@ Config.farms = {
 			vector2(2190.525390625, 5051.2163085938),
 			vector2(2244.49609375, 4994.9033203125)
 		},
-		activityLimit = Config.getActivityLimit(),
-		activities = {
+		taskLimit = Config.getTaskLimit(),
+		tasks = {
 			{ id = 'catch_chickens', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil, butcherId = 'cluck_n_bell', activityId = 'butcher_chickens' },
 			{ id = 'catch_pigs', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil, butcherId = 'slaughter_house', activityId = 'butcher_pigs' },
 			{ id = 'catch_cows', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil, butcherId = 'slaughter_house', activityId = 'butcher_cows' }
@@ -143,6 +155,8 @@ Config.farms = {
 	},
 	{
 		id = 'grapeseed_farm_4',
+		name = 'Grapeseed Farm #4',
+		active = true,
 		type = 'poly',
 		minZ = 45.580806732178,
 		maxZ = 47.347198486328,
@@ -155,8 +169,8 @@ Config.farms = {
 			vector2(2399.7668457031, 4995.5063476562),
 			vector2(2321.8386230469, 5073.6865234375)
 		},
-		activityLimit = Config.getActivityLimit(),
-		activities = {
+		taskLimit = Config.getTaskLimit(),
+		tasks = {
 			{ id = 'catch_chickens', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil, butcherId = 'cluck_n_bell', activityId = 'butcher_chickens' },
 			{ id = 'catch_pigs', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil, butcherId = 'slaughter_house', activityId = 'butcher_pigs' },
 			{ id = 'catch_cows', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil, butcherId = 'slaughter_house', activityId = 'butcher_cows' }
@@ -164,6 +178,8 @@ Config.farms = {
 	},
 	{
 		id = 'paleto_farm',
+		name = 'Paleto Farm',
+		active = true,
 		type = 'poly',
 		minZ = 25.097793579102,
 		maxZ = 31.911756515503,
@@ -174,8 +190,8 @@ Config.farms = {
 			vector2(765.27520751953, 6434.56640625),
 			vector2(602.26159667969, 6433.8056640625)
 		},
-		activityLimit = Config.getActivityLimit(),
-		activities = {
+		taskLimit = Config.getTaskLimit(),
+		tasks = {
 			{ id = 'catch_chickens', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil, butcherId = 'cluck_n_bell', activityId = 'butcher_chickens' },
 			{ id = 'catch_pigs', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil, butcherId = 'slaughter_house', activityId = 'butcher_pigs' },
 			{ id = 'catch_cows', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil, butcherId = 'slaughter_house', activityId = 'butcher_cows' }
@@ -186,6 +202,8 @@ Config.farms = {
 Config.butchers = {
 	{
 		id = 'slaughter_house',
+		name = 'Slaughter House',
+		active = true,
 		type = 'poly',
 		minZ = 30.297485351562,
 		maxZ = 31.023944854736,
@@ -200,14 +218,16 @@ Config.butchers = {
 			vector2(1010.4906005859, -2174.986328125),
 			vector2(1008.1586303711, -2195.7465820312)
 		},
-		activityLimit = Config.getActivityLimit(),
-		activities = {
+		taskLimit = Config.getTaskLimit(),
+		tasks = {
 			{ id = 'butcher_pigs', object = nil, coords = vector3(0.0, 0.0, 0.0) },
 			{ id = 'butcher_cows', object = nil, coords = vector3(0.0, 0.0, 0.0) }
 		},
 	},
 	{
 		id = 'cluck_n_bell',
+		name = 'Clucking Bell',
+		active = true,
 		type = 'poly',
 		minZ = 31.102109909058,
 		maxZ = 32.005264282227,
@@ -224,8 +244,8 @@ Config.butchers = {
 			vector2(-64.901191711426, 6205.3745117188),
 			vector2(-102.51775360107, 6171.314453125)
 		},
-		activityLimit = Config.getActivityLimit(),
-		activities = {
+		taskLimit = Config.getTaskLimit(),
+		tasks = {
 			{ id = 'butcher_chickens', object = nil, coords = vector3(0.0, 0.0, 0.0) }
 		},
 	}

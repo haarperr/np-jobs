@@ -1,8 +1,12 @@
 Config = {}
 
 Config.enabled = true -- show message
+Config.actviityName = 'activity_trucking'
 Config.jobName = 'Trucking'
 Config.initMessage = 'Loading: Trucking' -- (string) text to print
+
+-- Enable NoPixel Exports
+Config.useNoPixelExports = false
 
 -- Set required items for player to complete job tasks
 Config.requireMultipleItems = false -- (boolean) does this job require multiple items?
@@ -26,9 +30,9 @@ end
 --
 Config.maxGroupSize = 2 -- (integer) Maximum players allowed in the job center group for this job
 Config.zoneLimit = 2 -- (integer) Number of zones to complete before the "task" is flagged as "completed"
-Config.useRandActivityLimit = true -- (boolean) Use a ranom activity limit at each job site?
-Config.minActivityLimit = 2 -- (integer) Minimum number of activities required to complete a zone || NOTE: if useRandActivityLimit = false, this value becomes the default activityLimit for each zone
-Config.maxActivityLimit = 5 -- (integer) Maximum number of activities required to complete a zone
+Config.useRandTaskLimit = true -- (boolean) Use a ranom task limit at each job site?
+Config.minTaskLimit = 2 -- (integer) Minimum number of tasks required to complete a zone || NOTE: if useRandTaskLimit = false, this value becomes the default taskLimit for each zone
+Config.maxTaskLimit = 5 -- (integer) Maximum number of tasks required to complete a zone
 Config.payment = { -- job completion payment settings
 	cash = {
 		minPayment = 100, -- (integer) min amount of cash the job can pay out to each player
@@ -40,12 +44,12 @@ Config.payment = { -- job completion payment settings
 	},
 }
 
--- Custom Function to generate activityLimit for each zone
-Config.getActivityLimit = function()
-	if Config.useRandActivityLimit do
-		Config.activityLimit = random(Config.minActivityLimit, Config.maxActivityLimit) -- (integer) set random activityLimit between Config.minActivityLimit & Config.maxActivityLimit
+-- Custom Function to generate taskLimit for each zone
+Config.getTaskLimit = function()
+	if Config.useRandTaskLimit do
+		Config.taskLimit = random(Config.minTaskLimit, Config.maxTaskLimit) -- (integer) set random taskLimit between Config.minTaskLimit & Config.maxTaskLimit
 	else
-		Config.activityLimit = Config.minActivityLimit -- (integer) uses the minActivityLimit param above
+		Config.taskLimit = Config.minTaskLimit -- (integer) uses the minTaskLimit param above
 	end
 end
 
@@ -53,12 +57,14 @@ end
 Config.zones = {
 	{
 		id = 'zone_1',
+		name = 'Zone #1',
+		active = true,
 		type = 'box',
 		length = 20,
 		width = 20,
 		coords = vector3(0.0, 0.0, 0.0),
-		activityLimit = Config.getActivityLimit(),
-		activities = {
+		taskLimit = Config.getTaskLimit(),
+		tasks = {
 			{ id = 'activity_1', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
 			{ id = 'activity_2', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
 			{ id = 'activity_3', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil }
@@ -66,12 +72,14 @@ Config.zones = {
 	},
 	{
 		id = 'zone_2',
+		name = 'Zone #2',
+		active = true,
 		type = 'box',
 		length = 20,
 		width = 20,
 		coords = vector3(0.0, 0.0, 0.0),
-		activityLimit = Config.getActivityLimit(),
-		activities = {
+		taskLimit = Config.getTaskLimit(),
+		tasks = {
 			{ id = 'activity_1', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
 			{ id = 'activity_2', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
 			{ id = 'activity_3', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil }
@@ -79,12 +87,14 @@ Config.zones = {
 	},
 	{
 		id = 'zone_3',
+		name = 'Zone #3',
+		active = true,
 		type = 'box',
 		length = 20,
 		width = 20,
 		coords = vector3(0.0, 0.0, 0.0),
-		activityLimit = Config.getActivityLimit(),
-		activities = {
+		taskLimit = Config.getTaskLimit(),
+		tasks = {
 			{ id = 'activity_1', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
 			{ id = 'activity_2', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
 			{ id = 'activity_3', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil }
@@ -92,6 +102,8 @@ Config.zones = {
 	},
 	{
 		id = 'zone4',
+		name = 'Zone #4',
+		active = true,
 		type = 'poly',
 		minZ = 41.063034057617,
 		maxZ = 45.24654006958,
@@ -101,8 +113,8 @@ Config.zones = {
 			vector2(242.06045532227, -370.16152954102),
 			vector2(266.81866455078, -379.05453491211)
 		},
-		activityLimit = Config.getActivityLimit(),
-		activities = {
+		taskLimit = Config.getTaskLimit(),
+		tasks = {
 			{ id = 'activity_1', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
 			{ id = 'activity_2', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
 			{ id = 'activity_3', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil }

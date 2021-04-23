@@ -27,7 +27,7 @@ AddEventHandler("np-construction:assignZone", function()
 
 	-- Let me check if player hit zone limit during this run?
 	if playersZonesCompleted[source] ~= nil and #playersZonesCompleted[source] >= Config.zone_limit then
-		TriggerEvent("np-construction:completedRun", source)
+		TriggerEvent("np-construction:completeRun", source)
 		return print("You have completed max amount of zones this run")	 -- Notify User with UI
 	end
 
@@ -46,7 +46,7 @@ AddEventHandler("np-construction:assignZone", function()
 
 	-- Check if their is any zones the player can do (edge case)
 	if #zoneList == 0 then
-		TriggerEvent("np-construction:completedRun")
+		TriggerEvent("np-construction:completeRun")
 		return print("You have no more zones you can work at this time.") -- Notify User with UI
 	end
 
@@ -58,27 +58,27 @@ AddEventHandler("np-construction:assignZone", function()
 end)
 
 -- Called when the player completed their assigned amount of zones
-RegisterServerEvent("np-construction:completedRun")
-AddEventHandler("np-construction:completedRun", function(src)
-	playersConstructingTotal[src] = nil -- Remove how many activities they completed
+RegisterServerEvent("np-construction:completeRun")
+AddEventHandler("np-construction:completeRun", function(src)
+	playersConstructingTotal[src] = nil -- Remove how many tasks they completed
 	playersZonesCompleted[src] = nil -- Remove them from zones completed so when they strart the job again after a "cooldown" its backto default
 	TriggerClientEvent("np-construction:stopConstruction", src) -- Now lets tell client theyre not assigned a zone and reset their variables
 end)
 
--- NOTE: Debug event used to generate rock coords, comment out before using
-RegisterServerEvent("np-construction:genCoords")
-AddEventHandler("np-construction:genCoords", function(coords)
-	print(coords)
-	file = io.open("construction-coords.txt", "a")
-	if file then
-		file:write(coords)
-		file:write("\n")
-	end
-	file:close()
-end)
+-- NOTE: Debug event used to generate rock coords, comment out before using in production
+-- RegisterServerEvent("np-construction:genCoords")
+-- AddEventHandler("np-construction:genCoords", function(coords)
+-- 	print(coords)
+-- 	file = io.open("construction-coords.txt", "a")
+-- 	if file then
+-- 		file:write(coords)
+-- 		file:write("\n")
+-- 	end
+-- 	file:close()
+-- end)
 -- NOTE END
 
-RegisterServerEvent("np-construction:resetActivity")
-AddEventHandler("np-construction:resetActivity", function()
-	resetZoneActivities()
+RegisterServerEvent("np-construction:resetTask")
+AddEventHandler("np-construction:resetTask", function()
+	resetZoneTasks()
 end)
