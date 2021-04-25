@@ -44,7 +44,7 @@ Config.payment = { -- job completion payment settings
 -- Custom Function to generate taskLimit for each zone
 Config.getTaskLimit = function()
 	if Config.useRandTaskLimit then
-		Config.taskLimit = random(Config.minTaskLimit, Config.maxTaskLimit) -- (integer) set random taskLimit between Config.minTaskLimit & Config.maxTaskLimit
+		Config.taskLimit = math.random(Config.minTaskLimit, Config.maxTaskLimit) -- (integer) set random taskLimit between Config.minTaskLimit & Config.maxTaskLimit
 	else
 		Config.taskLimit = Config.minTaskLimit -- (integer) uses the minTaskLimit param above
 	end
