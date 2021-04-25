@@ -10,7 +10,7 @@ Config.useNoPixelExports = false
 
 -- Set required items for player to complete job tasks
 Config.requireMultipleItems = false -- (boolean) does this job require multiple items?
-if Config.requireMultipleItems do
+if Config.requireMultipleItems then
 	-- NOTE: REPLACE ITEM NAMES BELOW WITH PROPER NP ITEM NAMES
 	Config.requiredItems = {
 		'crowbar',
