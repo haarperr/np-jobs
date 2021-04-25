@@ -6,13 +6,15 @@ function givePlayerHammer(ped)
 end
 
 function createZone(zone)
+	local area = nil
+
 	if zone.type == 'circle' then
-		zone.area = CircleZone:Create(zone.coords, zone.radius, {
+		area = CircleZone:Create(zone.coords, zone.radius, {
 			name = zone.id,
 			debugPoly = zone.debug,
 		})
 	elseif zone.type == 'box' then
-		zone.area = BoxZone:Create(zone.coords, zone.length, zone.width, {
+		area = BoxZone:Create(zone.coords, zone.length, zone.width, {
 			name = zone.id,
 			heading = zone.heading,
 			debugPoly = zone.debug,
@@ -20,7 +22,7 @@ function createZone(zone)
 			maxZ = zone.maxZ
 		})
 	elseif zone.type == 'poly' then
-		zone.area = PolyZone:Create(zone.coords, {
+		area = PolyZone:Create(zone.coords, {
 			name = zone.id,
 			--minZ = 22.859148025513,
 			--maxZ = 29.39026260376
@@ -29,5 +31,8 @@ function createZone(zone)
 		-- TODO: create combo box
 	else
 		-- TODO: throw error for invalid types & get new zone?
+		print('^3ERROR:^7 Invalid zone type specified in the config!')
 	end
+
+	return area
 end
