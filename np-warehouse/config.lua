@@ -53,6 +53,13 @@ Config.getTaskLimit = function()
 	end
 end
 
+---
+-- Polyzones
+---
+
+-- debug options
+Config.debugZones = true
+
 -- Job related zones
 Config.zones = {
 	{

@@ -12,7 +12,7 @@ RegisterCommand("start_construction", function(source, args)
 	if canDoActivity then
 		TriggerServerEvent("np-construction:assignZone")
 	else
-		exports.functions:sendNotification("~r~You cant do this job at this time.", playerServerId)
+		exports.functions:sendNotification("~r~You cant do this job at this time.", playerServerId, Config.useNoPixelExports)
 	end
 end, false)
 
@@ -26,7 +26,7 @@ end, false)
 -- RegisterCommand("givepickaxe", function(source, args)
 --   local playerServerId = GetPlayerServerId(PlayerId())
 --   exports["np-activities"]:giveInventoryItem(playerServerId, Config.required_item, 5)
---   sendNotification("Gae item", playerServerId)
+--   sendNotification("Gae item", playerServerId, Config.useNoPixelExports)
 -- end, false)
 
 -- RegisterCommand("genrock", function(source, args)

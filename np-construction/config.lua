@@ -57,6 +57,9 @@ end
 -- Polyzones
 ---
 
+-- debug options
+Config.debugZones = true
+
 -- job sites / locations
 Config.zones = {
 	{
@@ -64,8 +67,11 @@ Config.zones = {
 		name = 'Paleto Wholefoods',
 		active = true,
 		type = 'box',
+		heading = 44,
 		length = 87,
 		width = 90,
+		minZ = 28.59,
+		maxZ = 37.39,
 		coords = vector3(74.04, 6535.2, 31.39),
 		taskLimit = Config.getTaskLimit(),
 		tasks = {
@@ -79,8 +85,11 @@ Config.zones = {
 		name = 'Paleto House',
 		active = true,
 		type = 'box',
+		heading = 45,
 		length = 36.2,
 		width = 45.6,
+		minZ = 29.05,
+		maxZ = 42.25,
 		coords = vector3(-327.41, 6303.54, 35.65),
 		taskLimit = Config.getTaskLimit(),
 		tasks = {
@@ -94,8 +103,11 @@ Config.zones = {
 		name = 'Paleto Clucking Bell',
 		active = true,
 		type = 'box',
+		heading = 46,
 		length = 55.0,
 		width = 78.2,
+		minZ = 30.2,
+		maxZ = 43.4,
 		coords = vector3(133.83, 6442.29, 31.2),
 		taskLimit = Config.getTaskLimit(),
 		tasks = {
@@ -109,8 +121,8 @@ Config.zones = {
 		name = 'PDM Skyscraper',
 		active = true,
 		type = 'poly',
-		minZ = 22.859148025513,
-		maxZ = 29.39026260376,
+		-- minZ = 22.859148025513,
+		-- maxZ = 29.39026260376,
 		coords = {
 			vector2(-81.278228759766, -1023.1381225586),
 			vector2(-105.77919769287, -1085.3673095703),
@@ -136,8 +148,11 @@ Config.zones = {
 		name = 'El Burro Heights House',
 		active = true,
 		type = 'box',
+		heading = 23,
 		length = 62.8,
 		width = 22.4,
+		minZ = nil,
+		maxZ = nil,
 		coords = vector3(1285.75, -1765.23, 51.78),
 		taskLimit = Config.getTaskLimit(),
 		tasks = {
@@ -151,8 +166,8 @@ Config.zones = {
 		name = 'Little Seoul Commercial',
 		active = true,
 		type = 'poly',
-		minZ = 22.699016571045,
-		maxZ = 30.910482406616,
+		-- minZ = 22.699016571045,
+		-- maxZ = 30.910482406616,
 		coords = {
 			vector2(-524.95336914062, -978.10595703125),
 			vector2(-520.99920654297, -955.76379394531),
@@ -182,8 +197,8 @@ Config.zones = {
 		name = 'Vespucci Canals House',
 		active = true,
 		type = 'poly',
-		minZ = 2.1501624584198,
-		maxZ = 2.8792240619659,
+		-- minZ = 2.1501624584198,
+		-- maxZ = 2.8792240619659,
 		coords = {
 			vector2(-1122.2845458984, -938.03149414062),
 			vector2(-1118.4185791016, -941.22991943359),
@@ -204,8 +219,11 @@ Config.zones = {
 		name = 'West Vinewood Hills House',
 		active = true,
 		type = 'box',
+		heading = 345,
 		length = 48.0,
 		width = 62.6,
+		minZ = 106.45,
+		maxZ = 118.25,
 		coords = vector3(-2008.5, 547.96, 110.65),
 		taskLimit = Config.getTaskLimit(),
 		tasks = {
@@ -219,8 +237,8 @@ Config.zones = {
 		name = 'Rockford Hills House',
 		active = true,
 		type = 'poly',
-		minZ = 73.092056274414,
-		maxZ = 87.158027648926,
+		-- minZ = 73.092056274414,
+		-- maxZ = 87.158027648926,
 		coords = {
 			vector2(-883.5185546875, 408.04168701172),
 			vector2(-895.01873779297, 403.55014038086),
@@ -250,8 +268,8 @@ Config.zones = {
 		name = 'North Vinewood House',
 		active = true,
 		type = 'poly',
-		minZ = 143.23245239258,
-		maxZ = 149.25944519043,
+		-- minZ = 143.23245239258,
+		-- maxZ = 149.25944519043,
 		coords = {
 			vector2(-778.21942138672, 709.63452148438),
 			vector2(-764.22674560547, 715.84973144531),
@@ -272,8 +290,8 @@ Config.zones = {
 		name = 'Alta Skyscraper',
 		active = true,
 		type = 'poly',
-		minZ = 36.598949432373,
-		maxZ = 49.670181274414,
+		-- minZ = 36.598949432373,
+		-- maxZ = 49.670181274414,
 		coords = {
 			vector2(41.710205078125, -307.36505126953),
 			vector2(83.869720458984, -322.6711730957),

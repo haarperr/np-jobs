@@ -22,21 +22,43 @@ AddEventHandler("np-construction:assignedZone", function(zone)
 	local playerServerId = GetPlayerServerId(PlayerId())
 
 	-- TODO: Replace this with a function to generate all types of zones based on the zoneType ('box', 'circle', 'poly')
-	zone.area = CircleZone:Create(zone.coords, zone.circleSize, {
-		name=zone.id,
-		debugPoly=true,
-	})
+	if zone.type == 'circle' then
+		zone.area = CircleZone:Create(zone.coords, zone.radius, {
+			name = zone.id,
+			debugPoly = zone.debug,
+		})
+	elseif zone.type == 'box' then
+		zone.area = BoxZone:Create(zone.coords, zone.length, zone.width, {
+			name = zone.id,
+			heading = zone.heading,
+			debugPoly = zone.debug,
+			minZ = zone.minZ,
+			maxZ = zone.maxZ
+		})
+	elseif zone.type == 'poly' then
+		zone.area = PolyZone:Create(zone.coords, {
+			name = zone.id,
+			--minZ = 22.859148025513,
+			--maxZ = 29.39026260376
+		})
+	elseif zone.type == 'combo' then
+		-- TODO: create combo box
+	else
+		-- TODO: throw error for invalid types & get new zone?
+	end
+	
+	
 
 	zone.area:onPlayerInOut(handlePlayerEnteringZone)
 
 	assignedZone = zone
-	constructionStatus = "Assigned to zone - " .. zone.id
-	exports.functions:sendNotification('~g~You have been assigned to a new zone ' .. zone.name, playerServerId)
+	constructionStatus = "Assigned to zone - " .. zone.name
+	exports.functions:sendNotification('~g~You have been assigned to a new zone ' .. zone.name, playerServerId, Config.useNoPixelExports)
 
 	if Config.useNopixelExports then
 		exports["np-activities"]:activityInProgress(Config.activityName, playerServerId)
 	else
-		exports.functions:sendNotification("~g~Activity in progress", playerServerId)
+		exports.functions:sendNotification("~g~Activity in progress", playerServerId, Config.useNoPixelExports)
 	end
 end)
 
@@ -52,13 +74,13 @@ AddEventHandler("np-construction:clearAssignedZone", function(zone)
 		isInZone = false
 
 		
-		exports.functions:sendNotification('~g~Assigned Zone Complete', playerServerId)
+		exports.functions:sendNotification('~g~Assigned Zone Complete', playerServerId, Config.useNoPixelExports)
 
 		-- TODO: possibly set this delay to a random number based on # of jobs completed so far (would need config setup)
 		Citizen.Wait(5000)
 		
 		TriggerServerEvent("np-construction:assignZone")
-		exports.functions:sendNotification('~g~New Zone Assigned', playerServerId)
+		exports.functions:sendNotification('~g~New Zone Assigned', playerServerId, Config.useNoPixelExports)
 	end)
 end)
 
@@ -72,7 +94,7 @@ AddEventHandler("np-mining:beginConstruction", function(zone, task, hitsNeeded, 
 	if Config.useNoPixelExports then
 		exports["np-activities"]:taskInProgress(Config.activityName, playerServerId, 'started_constructing_' .. task.id, 'Started Construction...')
 	else
-		exports.functions:sendNotification('~g~started_constructing_'..task.id, playerServerId)
+		exports.functions:sendNotification('~g~started_constructing_'..task.id, playerServerId, Config.useNoPixelExports)
 	end
 
 	startConstructionAnimation(zone, GetPlayerPed(-1), task, hitsNeeded, source)
@@ -88,10 +110,10 @@ AddEventHandler("np-mining:completeTask", function(zone, task, reward)
 		exports["np-activities"]:giveInventoryItem(playerServerId, reward, 1)
 		exports["np-activities"]:taskCompleted(Config.activityName, playerServerId, 'started_constructing_' .. task.id, true, 'Construction Complete!')
 	else
-		exports.functions:sendNotification("~g~finished_constructing_" .. task.id, playerServerId)
+		exports.functions:sendNotification("~g~finished_constructing_" .. task.id, playerServerId, Config.useNoPixelExports)
 	end
 
-	exports.functions:sendNotification("~g~Construction Completed and received a " .. reward, playerServerId)
+	exports.functions:sendNotification("~g~Construction Completed and received a " .. reward, playerServerId, Config.useNoPixelExports)
 end)
 
 -- Called when user wants to stop construction
@@ -111,7 +133,7 @@ AddEventHandler("np-construction:stopConstruction", function(zone, activity)
 	if Config.useNopixelExports then
 		exports["np-activities"]:activityCompleted(Config.activityName, playerServerId, true, 'Player either completed or cancelled their task!')
 	else
-		exports.functions:sendNotification('~g~Activity was completed or cancelled', playerServerId)
+		exports.functions:sendNotification('~g~Activity was completed or cancelled', playerServerId, Config.useNoPixelExports)
 	end
 
 end)

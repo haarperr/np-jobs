@@ -50,9 +50,12 @@ Config.getTaskLimit = function()
 	end
 end
 
---
--- Zones
---
+---
+-- Polyzones
+---
+
+-- debug options
+Config.debugZones = true
 
 -- Task 0 : Job Pickup & Drop-off
 Config.foreman = {
