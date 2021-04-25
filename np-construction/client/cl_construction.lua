@@ -16,6 +16,35 @@ Citizen.CreateThread(function()
 	end
 end)
 
+function attemptTask()
+	local hasRequiredTools = false
+	local playerServerId = GetPlayerServerId(PlayerId())
+
+	if Config.enableNopixelExports then
+		hasRequiredTools = exports["np-activities"]:hasInventoryItem(playerServerId, Config.requiredItem)
+	else
+		-- NOTE: This is for dev testing only, comment out or add better check here in production
+		hasRequiredTools = true
+	end
+
+	if hasRequiredTools then
+		local ped = PlayerPedId()
+		local playerCoord = GetEntityCoords(ped)
+		local target = GetOffsetFromEntityInWorldCoords(ped, vector3(0,2,-3))
+		local testRay = CastRayPointToPoint(playerCoord, target, 17, ped, 7)
+		local _, hit, hitLocation, surfaceNormal, taskObj, _ = GetRaycastResult(testRay)
+
+		for _, task in pairs(assignedZone.tasks) do
+			-- TODO: Add loop for all task object models here?
+			if task.object == taskObj then
+				TriggerServerEvent("np-mining:attemptTask", assignedZone, task)
+			end
+		end
+	else
+		sendNotification("You don't have the item to mine this rock.", playerServerId)
+	end
+end
+
 -- Called when the player gets assigned to a zone
 RegisterNetEvent("np-construction:assignedZone")
 AddEventHandler("np-construction:assignedZone", function(zone)
@@ -23,16 +52,18 @@ AddEventHandler("np-construction:assignedZone", function(zone)
 
 	-- TODO: Replace this with a function to generate all types of zones based on the zoneType ('box', 'circle', 'poly')
 	zone.area = createZone(zone)
-	zone.area:onPlayerInOut(handlePlayerEnteringZone)
+	if zone.area ~= nil
+		zone.area:onPlayerInOut(handlePlayerEnteringZone)
 
-	assignedZone = zone
-	constructionStatus = "Assigned to zone - " .. zone.name
-	exports.functions:sendNotification('~g~You have been assigned to a new zone ' .. zone.name, playerServerId, Config.useNoPixelExports)
+		assignedZone = zone
+		constructionStatus = "Assigned to zone - " .. zone.name
+		exports.functions:sendNotification('~g~You have been assigned to a new zone ' .. zone.name, playerServerId, Config.useNoPixelExports)
 
-	if Config.useNopixelExports then
-		exports["np-activities"]:activityInProgress(Config.activityName, playerServerId)
-	else
-		exports.functions:sendNotification("~g~Activity in progress", playerServerId, Config.useNoPixelExports)
+		if Config.useNopixelExports then
+			exports["np-activities"]:activityInProgress(Config.activityName, playerServerId)
+		else
+			exports.functions:sendNotification("~g~Activity in progress", playerServerId, Config.useNoPixelExports)
+		end
 	end
 end)
 
@@ -58,9 +89,9 @@ AddEventHandler("np-construction:clearAssignedZone", function(zone)
 	end)
 end)
 
--- Called when we are mining a valid rock
-RegisterNetEvent("np-mining:beginConstruction")
-AddEventHandler("np-mining:beginConstruction", function(zone, task, hitsNeeded, source)
+-- Called when we are interacting with a valid task model
+RegisterNetEvent("np-construction:beginConstruction")
+AddEventHandler("np-construction:beginConstruction", function(zone, task, hitsNeeded, source)
 	local playerServerId = GetPlayerServerId(PlayerId())
 
 	isCurrentlyConstructing = true
@@ -71,12 +102,13 @@ AddEventHandler("np-mining:beginConstruction", function(zone, task, hitsNeeded, 
 		exports.functions:sendNotification('~g~started_constructing_'..task.id, playerServerId, Config.useNoPixelExports)
 	end
 
-	startConstructionAnimation(zone, GetPlayerPed(-1), task, hitsNeeded, source)
+	-- TODO: Check task and get proper animation based on object model being interacted with???
+	startTaskAnimation(zone, GetPlayerPed(-1), task, hitsNeeded, source)
 end)
 
--- Called when we are done breaking the rock and going to collect it
-RegisterNetEvent("np-mining:completeTask")
-AddEventHandler("np-mining:completeTask", function(zone, task, reward)
+-- Called when we are done with a task
+RegisterNetEvent("np-construction:completeTask")
+AddEventHandler("np-construction:completeTask", function(zone, task, reward)
 	local playerServerId = GetPlayerServerId(PlayerId())
 	isCurrentlyConstructing = false
 
@@ -109,7 +141,6 @@ AddEventHandler("np-construction:stopConstruction", function(zone, activity)
 	else
 		exports.functions:sendNotification('~g~Activity was completed or cancelled', playerServerId, Config.useNoPixelExports)
 	end
-
 end)
 
 -- Called when the player is assigned to a zone
@@ -117,12 +148,12 @@ function handlePlayerEnteringZone(isPointInside, point)
 	if assignedZone then
 		if isPointInside then
 			print('Player entered zone')
-			-- generateRockObjs(assignedZone.rocks, assignedZone.rockProp)
+			generateTaskObjs(assignedZone.tasks, assignedZone.prop)
 			isInZone = true
 			constructionStatus = 'Complete tasks!'
 		else
 			print('player exited zone')
-			-- removeRockObjs(assignedZone.rocks)
+			removeTaskObjs(assignedZone.tasks)
 			isInZone = false
 			constructionStatus = "Go to the job site - " .. assignedZone.name
 		end
@@ -130,30 +161,26 @@ function handlePlayerEnteringZone(isPointInside, point)
 end
 
 -- Called when player enters a job zone and needs to generate the task objects
--- function generateRockObjs(rocks, prop)
--- 	local newRocks = rocks
+function generateTaskObjs(tasks, prop)
+	local newTasks = tasks
 
--- 	for i, rock in pairs(newRocks) do
--- 		local unused, objectZ = GetGroundZFor_3dCoord(rock.coords["x"], rock.coords["y"], 99999.0, 1)
--- 		rock.object = CreateObject(GetHashKey(prop), rock.coords["x"], rock.coords["y"], objectZ - 0.2, false, true, false)
--- 		FreezeEntityPosition(rock.object, true)
--- 		-- Maybe you want to create a PolyZone here so that you can "peak" to start mining
--- 	end
+	for i, task in pairs(newTasks) do
+		local unused, objectZ = GetGroundZFor_3dCoord(task.coords["x"], task.coords["y"], 99999.0, 1)
+		task.object = CreateObject(GetHashKey(prop), task.coords["x"], task.coords["y"], objectZ - 0.2, false, true, false)
+		FreezeEntityPosition(task.object, true)
+		-- Maybe you want to create a PolyZone here so that you can "peak" to start mining
+	end
 
--- 	assignedZone.rocks = newRocks
--- end
+	assignedZone.tasks = newTasks
+end
   
--- Used to remove rock objs when the player leaves the zone
--- function removeRockObjs(rocks)
-
--- 	for i, rock in pairs(rocks) do
-
--- 		if rock.object ~= nil then
--- 			DetachEntity(rock.object, 1, true)
--- 			DeleteEntity(rock.object)
--- 			DeleteObject(rock.object)
--- 		end
-	
--- 	end
-	
--- end
+-- Used to remove task objects when the player leaves the zone
+function removeTaskObjs(tasks)
+	for i, task in pairs(tasks) do
+		if task.object ~= nil then
+			DetachEntity(task.object, 1, true)
+			DeleteEntity(task.object)
+			DeleteObject(task.object)
+		end
+	end
+end

@@ -45,6 +45,12 @@ function givePlayerPickaxe(ped)
 	AttachEntityToEntity(tool, ped, GetPedBoneIndex(ped, 28422), 0.0, -0.06, -0.04, -102.0, 177.0, -12.0, true, true, false, true, false, true)
 end
 
+function removePlayerTool()
+	DetachEntity(tool, 1, true)
+	DeleteEntity(tool)
+	DeleteObject(tool)
+end
+
 function createZone(zone)
 	local area = nil
 
@@ -70,9 +76,49 @@ function createZone(zone)
 	elseif zone.type == 'combo' then
 		-- TODO: create combo box
 	else
-		-- TODO: throw error for invalid types & get new zone?
-		print('^3ERROR:^7 Invalid zone type specified in the config!')
+		-- do nothing
+		print('^3ERROR:^7 Invalid zone type specified in the construction config!')
 	end
 
 	return area
+end
+
+function startTaskAnimation(zone, ped, task, hitsNeeded, source)
+	local hitsDone = 0
+	local hitsRequired = hitsNeeded
+  
+	Citizen.CreateThread(function()
+		while hitsDone < hitsRequired do
+			Citizen.Wait(1)
+	
+			-- Lets request animation dict first
+			RequestAnimDict("anim@heists@box_carry@")
+			RequestAnimDict("melee@large_wpn@streamed_core")
+	
+			while not HasAnimDictLoaded("melee@large_wpn@streamed_core") and not HasAnimDictLoaded("anim@heists@box_carry@") do
+				Citizen.Wait(1)
+			end
+			
+			TaskPlayAnim(ped, "melee@large_wpn@streamed_core", "ground_attack_on_spot", 8.0, 8.0, -1, 80, 0, 0, 0, 0)
+	
+			
+			-- Just started animation so give the player the tool
+			if hitsDone == 0 then
+				-- TODO: Check task and get proper tool based on task???
+				givePlayerPickaxe(ped)
+			end
+	
+			Citizen.Wait(2500)
+			ClearPedTasks(ped)
+			hitsDone = hitsDone + 1
+	
+			if hitsDone >= hitsNeeded then
+				removePlayerTool()
+				Citizen.Wait(250)
+				-- pickupRock() -- Called to hold rock in hand with animation until player puts the item in the truck/car?
+				TriggerServerEvent("np-construction:completedTask", zone, task, source)
+				break
+			end  
+		end
+	end)
 end

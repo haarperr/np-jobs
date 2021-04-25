@@ -3,7 +3,7 @@ Config = {}
 Config.enabled = true -- (boolean) is the job enabled?
 Config.actviityName = 'activity_construction'
 Config.jobName = 'Construction Worker'
-Config.initMessage = 'Loading: Construction' -- (string) text to print
+Config.initMessage = 'Construction Loaded' -- (string) text to print
 
 -- Enable NoPixel Exports
 Config.useNoPixelExports = false
@@ -357,5 +357,5 @@ Config.zones = {
 
 --Custom Print Function
 Config.print = function(text) 
-	print('^3CONFIG^7', text)
+	print('^3JOBS^7', text)
 end
