@@ -22,33 +22,7 @@ AddEventHandler("np-construction:assignedZone", function(zone)
 	local playerServerId = GetPlayerServerId(PlayerId())
 
 	-- TODO: Replace this with a function to generate all types of zones based on the zoneType ('box', 'circle', 'poly')
-	if zone.type == 'circle' then
-		zone.area = CircleZone:Create(zone.coords, zone.radius, {
-			name = zone.id,
-			debugPoly = zone.debug,
-		})
-	elseif zone.type == 'box' then
-		zone.area = BoxZone:Create(zone.coords, zone.length, zone.width, {
-			name = zone.id,
-			heading = zone.heading,
-			debugPoly = zone.debug,
-			minZ = zone.minZ,
-			maxZ = zone.maxZ
-		})
-	elseif zone.type == 'poly' then
-		zone.area = PolyZone:Create(zone.coords, {
-			name = zone.id,
-			--minZ = 22.859148025513,
-			--maxZ = 29.39026260376
-		})
-	elseif zone.type == 'combo' then
-		-- TODO: create combo box
-	else
-		-- TODO: throw error for invalid types & get new zone?
-	end
-	
-	
-
+	zone.area = createZone(zone)
 	zone.area:onPlayerInOut(handlePlayerEnteringZone)
 
 	assignedZone = zone
