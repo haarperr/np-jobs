@@ -103,6 +103,10 @@ Config.zones = {
 			{ id = 'activity_2', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
 			{ id = 'activity_3', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil }
 		},
+		blip = {
+			icon = 0,
+			coords = vector3(0.0, 0.0, 0.0),
+		},
 	},
 	{
 		id = 'western_skatepark',
@@ -134,6 +138,10 @@ Config.zones = {
 			{ id = 'activity_1', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
 			{ id = 'activity_2', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
 			{ id = 'activity_3', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil }
+		},
+		blip = {
+			icon = 0,
+			coords = vector3(0.0, 0.0, 0.0),
 		},
 	},
 	{
@@ -203,6 +211,10 @@ Config.zones = {
 			{ id = 'activity_2', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
 			{ id = 'activity_3', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil }
 		},
+		blip = {
+			icon = 0,
+			coords = vector3(0.0, 0.0, 0.0),
+		},
 	},
 	{
 		id = 'vinewood_mansion',
@@ -244,6 +256,10 @@ Config.zones = {
 			{ id = 'activity_2', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
 			{ id = 'activity_3', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil }
 		},
+		blip = {
+			icon = 0,
+			coords = vector3(0.0, 0.0, 0.0),
+		},
 	},
 	{
 		id = 'downtown_park',
@@ -268,6 +284,10 @@ Config.zones = {
 			{ id = 'activity_1', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
 			{ id = 'activity_2', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
 			{ id = 'activity_3', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil }
+		},
+		blip = {
+			icon = 0,
+			coords = vector3(0.0, 0.0, 0.0),
 		},
 	},
 	{
@@ -311,6 +331,10 @@ Config.zones = {
 			{ id = 'activity_2', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
 			{ id = 'activity_3', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil }
 		},
+		blip = {
+			icon = 0,
+			coords = vector3(0.0, 0.0, 0.0),
+		},
 	},
 	{
 		id = 'legion_square',
@@ -339,6 +363,10 @@ Config.zones = {
 			{ id = 'activity_1', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
 			{ id = 'activity_2', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
 			{ id = 'activity_3', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil }
+		},
+		blip = {
+			icon = 0,
+			coords = vector3(0.0, 0.0, 0.0),
 		},
 	},
 	{
@@ -387,6 +415,10 @@ Config.zones = {
 			{ id = 'activity_2', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
 			{ id = 'activity_3', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil }
 		},
+		blip = {
+			icon = 0,
+			coords = vector3(0.0, 0.0, 0.0),
+		},
 	},
 	{
 		id = 'mirrorpark_lake',
@@ -433,6 +465,10 @@ Config.zones = {
 			{ id = 'activity_2', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
 			{ id = 'activity_3', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil }
 		},
+		blip = {
+			icon = 0,
+			coords = vector3(0.0, 0.0, 0.0),
+		},
 	},
 	{
 		id = 'paleto_rest_area',
@@ -470,6 +506,10 @@ Config.zones = {
 			{ id = 'activity_2', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
 			{ id = 'activity_3', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil }
 		},
+		blip = {
+			icon = 0,
+			coords = vector3(0.0, 0.0, 0.0),
+		},
 	},
 	{
 		id = 'north_vinewood_park',
@@ -503,6 +543,10 @@ Config.zones = {
 			{ id = 'activity_1', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
 			{ id = 'activity_2', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
 			{ id = 'activity_3', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil }
+		},
+		blip = {
+			icon = 0,
+			coords = vector3(0.0, 0.0, 0.0),
 		},
 	},
 	{
@@ -544,6 +588,10 @@ Config.zones = {
 			{ id = 'activity_2', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
 			{ id = 'activity_3', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil }
 		},
+		blip = {
+			icon = 0,
+			coords = vector3(0.0, 0.0, 0.0),
+		},
 	},
 	{
 		id = 'court_house',
@@ -582,6 +630,10 @@ Config.zones = {
 			{ id = 'activity_2', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
 			{ id = 'activity_3', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil }
 		},
+		blip = {
+			icon = 0,
+			coords = vector3(0.0, 0.0, 0.0),
+		},
 	}
 	-- {
 	-- 	id = 'zone_1',
@@ -596,6 +648,10 @@ Config.zones = {
 	-- 		{ id = 'activity_1', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
 	-- 		{ id = 'activity_2', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
 	-- 		{ id = 'activity_3', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
+	-- 	},
+	-- 	blip = {
+	-- 		icon = 0,
+	-- 		coords = vector3(0.0, 0.0, 0.0),
 	-- 	},
 	-- },
 } 

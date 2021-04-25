@@ -65,9 +65,13 @@ Config.foreman = {
 	type = 'circle',
 	radius = 25,
 	coords = vector3(0.0, 0.0, 0.0),
-	activities = {
+	tasks = {
 		{ id = 'get_truck', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
 		{ id = 'return_truck', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil }
+	},
+	blip = {
+		icon = 0,
+		coords = vector3(0.0, 0.0, 0.0),
 	},
 }
 -- Task 1 : Animal Collection
@@ -104,6 +108,10 @@ Config.farms = {
 			{ id = 'catch_pigs', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil, butcherId = 'slaughter_house', activityId = 'butcher_pigs' },
 			{ id = 'catch_cows', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil, butcherId = 'slaughter_house', activityId = 'butcher_cows' }
 		},
+		blip = {
+			icon = 0,
+			coords = vector3(0.0, 0.0, 0.0),
+		},
 	},
 	{
 		id = 'grapeseed_farm_2',
@@ -132,6 +140,10 @@ Config.farms = {
 			{ id = 'catch_pigs', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil, butcherId = 'slaughter_house', activityId = 'butcher_pigs' },
 			{ id = 'catch_cows', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil, butcherId = 'slaughter_house', activityId = 'butcher_cows' }
 		},
+		blip = {
+			icon = 0,
+			coords = vector3(0.0, 0.0, 0.0),
+		},
 	},
 	{
 		id = 'grapeseed_farm_3',
@@ -154,6 +166,10 @@ Config.farms = {
 			{ id = 'catch_chickens', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil, butcherId = 'cluck_n_bell', activityId = 'butcher_chickens' },
 			{ id = 'catch_pigs', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil, butcherId = 'slaughter_house', activityId = 'butcher_pigs' },
 			{ id = 'catch_cows', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil, butcherId = 'slaughter_house', activityId = 'butcher_cows' }
+		},
+		blip = {
+			icon = 0,
+			coords = vector3(0.0, 0.0, 0.0),
 		},
 	},
 	{
@@ -178,6 +194,10 @@ Config.farms = {
 			{ id = 'catch_pigs', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil, butcherId = 'slaughter_house', activityId = 'butcher_pigs' },
 			{ id = 'catch_cows', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil, butcherId = 'slaughter_house', activityId = 'butcher_cows' }
 		},
+		blip = {
+			icon = 0,
+			coords = vector3(0.0, 0.0, 0.0),
+		},
 	},
 	{
 		id = 'paleto_farm',
@@ -198,6 +218,10 @@ Config.farms = {
 			{ id = 'catch_chickens', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil, butcherId = 'cluck_n_bell', activityId = 'butcher_chickens' },
 			{ id = 'catch_pigs', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil, butcherId = 'slaughter_house', activityId = 'butcher_pigs' },
 			{ id = 'catch_cows', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil, butcherId = 'slaughter_house', activityId = 'butcher_cows' }
+		},
+		blip = {
+			icon = 0,
+			coords = vector3(0.0, 0.0, 0.0),
 		},
 	}
 } 
@@ -226,6 +250,10 @@ Config.butchers = {
 			{ id = 'butcher_pigs', object = nil, coords = vector3(0.0, 0.0, 0.0) },
 			{ id = 'butcher_cows', object = nil, coords = vector3(0.0, 0.0, 0.0) }
 		},
+		blip = {
+			icon = 0,
+			coords = vector3(0.0, 0.0, 0.0),
+		},
 	},
 	{
 		id = 'cluck_n_bell',
@@ -250,6 +278,10 @@ Config.butchers = {
 		taskLimit = Config.getTaskLimit(),
 		tasks = {
 			{ id = 'butcher_chickens', object = nil, coords = vector3(0.0, 0.0, 0.0) }
+		},
+		blip = {
+			icon = 0,
+			coords = vector3(0.0, 0.0, 0.0),
 		},
 	}
 } 

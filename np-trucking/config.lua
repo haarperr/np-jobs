@@ -76,6 +76,10 @@ Config.zones = {
 			{ id = 'activity_2', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
 			{ id = 'activity_3', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil }
 		},
+		blip = {
+			icon = 0,
+			coords = vector3(0.0, 0.0, 0.0),
+		},
 	},
 	{
 		id = 'zone_2',
@@ -91,6 +95,10 @@ Config.zones = {
 			{ id = 'activity_2', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
 			{ id = 'activity_3', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil }
 		},
+		blip = {
+			icon = 0,
+			coords = vector3(0.0, 0.0, 0.0),
+		},
 	},
 	{
 		id = 'zone_3',
@@ -105,6 +113,10 @@ Config.zones = {
 			{ id = 'activity_1', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
 			{ id = 'activity_2', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
 			{ id = 'activity_3', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil }
+		},
+		blip = {
+			icon = 0,
+			coords = vector3(0.0, 0.0, 0.0),
 		},
 	},
 	{
@@ -125,6 +137,10 @@ Config.zones = {
 			{ id = 'activity_1', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
 			{ id = 'activity_2', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
 			{ id = 'activity_3', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil }
+		},
+		blip = {
+			icon = 0,
+			coords = vector3(0.0, 0.0, 0.0),
 		},
 	}
 } 
