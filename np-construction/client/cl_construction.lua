@@ -12,7 +12,7 @@ Citizen.CreateThread(function()
 				attempToConstruct() -- This can be changed to an event handler so if you want to call it when you use an item
 			end
 		end
-		showText(constructionStatus)
+		exports.functions:showText(constructionStatus)
 	end
 end)
 

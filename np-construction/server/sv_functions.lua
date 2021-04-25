@@ -14,12 +14,12 @@ end
 
 
 function resetZoneTasks()
-	print("Checking if any activities need to be reset...")
+	print('Checking if tasks need to be reset...')
 	for _, zone in pairs(Config.zones) do
 		for _, task in pairs(zone.tasks) do
-			if not task.isBeingConstructed and task.isConstructed then
-				task.isConstructed = false
-				task.beingConstructedBy = nil
+			if not task.isBeingUsed and task.isUsed then
+				task.isUsed = false
+				task.beingUsedBy = nil
 			end
 		end
 	end
