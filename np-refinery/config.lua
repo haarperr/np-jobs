@@ -161,5 +161,5 @@ Config.zones = {
 
 --custonm print function
 Config.print = function(text) 
-	print("^3CONFIG^7", text)
+	print("^3JOBS^7", text)
 end
