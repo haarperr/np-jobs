@@ -31,5 +31,5 @@ end, false)
 
 -- RegisterCommand("genrock", function(source, args)
 --   local playerPed = GetPlayerPed(-1)
---   TriggerServerEvent("np-mining:genRock", GetEntityCoords(playerPed))
+--   TriggerServerEvent("np-construction:genRock", GetEntityCoords(playerPed))
 -- end, false)

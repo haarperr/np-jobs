@@ -24,6 +24,10 @@ end
 --
 -- Variables
 --
+Config.useRandTimeToComplete = true -- (boolean) Use a ranom task limit at each job site?
+Config.minTimeToComplete = 1800000 -- (integer) Minimum number of milliseconds the job offer is good for before expiring/failing || NOTE: 180000 = 30 minutes
+Config.maxTimeToComplete = 3600000-- (integer) Maximum number of milliseconds the job offer is good for before expiring/failing || NOTE: 360000 = 60 minutes
+Config.requiredHits = 3 -- (integer) Number of animation cycles required to complete the task
 Config.maxGroupSize = 2 -- (integer) Maximum players allowed in the job center group for this job
 Config.zoneLimit = 2 -- (integer) Number of zones to complete before the "task" is flagged as "completed"
 Config.useRandTaskLimit = true -- (boolean) Use a ranom task limit at each job site?
@@ -43,9 +47,9 @@ Config.payment = { -- job completion payment settings
 -- Custom Function to generate taskLimit for each zone
 Config.getTaskLimit = function()
 	if Config.useRandTaskLimit then
-		Config.taskLimit = math.random(Config.minTaskLimit, Config.maxTaskLimit) -- (integer) set random taskLimit between Config.minTaskLimit & Config.maxTaskLimit
+		return math.random(Config.minTaskLimit, Config.maxTaskLimit) -- (integer) set random taskLimit between Config.minTaskLimit & Config.maxTaskLimit
 	else
-		Config.taskLimit = Config.minTaskLimit -- (integer) uses the minTaskLimit param above
+		return Config.minTaskLimit -- (integer) uses the minTaskLimit param above
 	end
 end
 
@@ -64,8 +68,8 @@ Config.zones = {
 		name = 'Graveyard',
 		active = true,
 		type = 'poly',
-		minZ = 38.964504241943,
-		maxZ = 67.078857421875,
+		-- minZ = 38.964504241943,
+		-- maxZ = 67.078857421875,
 		coords = {
 			vector2(-1858.9957275391, -213.64888000488),
 			vector2(-1841.1221923828, -195.63279724121),
@@ -113,8 +117,8 @@ Config.zones = {
 		name = 'Western Skatepark',
 		active = true,
 		type = 'poly',
-		minZ = 15.405848503113,
-		maxZ = 27.727514266968,
+		-- minZ = 15.405848503113,
+		-- maxZ = 27.727514266968,
 		coords = {
 			vector2(-990.72833251953, -804.45660400391),
 			vector2(-981.77130126953, -788.62939453125),
@@ -149,8 +153,8 @@ Config.zones = {
 		name = 'Northern Golf Course',
 		active = true,
 		type = 'poly',
-		minZ = 37.74352645874,
-		maxZ = 67.588729858398,
+		-- minZ = 37.74352645874,
+		-- maxZ = 67.588729858398,
 		coords = {
 			vector2(-903.65466308594, -108.19882202148),
 			vector2(-921.23864746094, -121.7516708374),
@@ -221,8 +225,8 @@ Config.zones = {
 		name = 'Vinewood Mansion',
 		active = true,
 		type = 'poly',
-		minZ = 226.62889099121,
-		maxZ = 236.91148376465,
+		-- minZ = 226.62889099121,
+		-- maxZ = 236.91148376465,
 		coords = {
 			vector2(-79.598571777344, 912.64489746094),
 			vector2(-89.612419128418, 922.51788330078),
@@ -266,8 +270,8 @@ Config.zones = {
 		name = 'Downtown Park',
 		active = true,
 		type = 'poly',
-		minZ = 30.62921333313,
-		maxZ = 40.416103363037,
+		-- minZ = 30.62921333313,
+		-- maxZ = 40.416103363037,
 		coords = {
 			vector2(-32.532974243164, -406.66662597656),
 			vector2(-56.876258850098, -481.09274291992),
@@ -295,8 +299,8 @@ Config.zones = {
 		name = 'City Hall',
 		active = true,
 		type = 'poly',
-		minZ = 30.62921333313,
-		maxZ = 40.416103363037,
+		-- minZ = 30.62921333313,
+		-- maxZ = 40.416103363037,
 		coords = {
 			vector2(-475.4162902832, -223.00552368164),
 			vector2(-470.45443725586, -225.44831848145),
@@ -341,8 +345,8 @@ Config.zones = {
 		name = 'Legion Square',
 		active = true,
 		type = 'poly',
-		minZ = 29.158296585083,
-		maxZ = 31.021266937256,
+		-- minZ = 29.158296585083,
+		-- maxZ = 31.021266937256,
 		coords = {
 			vector2(124.43236541748, -991.32653808594),
 			vector2(161.45614624023, -888.63891601562),
@@ -374,8 +378,8 @@ Config.zones = {
 		name = 'Mirrorpark Skate & Soccer',
 		active = true,
 		type = 'poly',
-		minZ = 45.384662628174,
-		maxZ = 74.772308349609,
+		-- minZ = 45.384662628174,
+		-- maxZ = 74.772308349609,
 		coords = {
 			vector2(746.17199707031, -158.04463195801),
 			vector2(770.34210205078, -173.41551208496),
@@ -425,8 +429,8 @@ Config.zones = {
 		name = 'Mirrorpark Lake',
 		active = true,
 		type = 'poly',
-		minZ = 57.318111419678,
-		maxZ = 64.909599304199,
+		-- minZ = 57.318111419678,
+		-- maxZ = 64.909599304199,
 		coords = {
 			vector2(1186.7663574219, -753.46514892578),
 			vector2(1072.4436035156, -753.33062744141),
@@ -475,8 +479,8 @@ Config.zones = {
 		name = 'Paleto Rest Stop',
 		active = true,
 		type = 'poly',
-		minZ = 8.3955898284912,
-		maxZ = 24.054468154907,
+		-- minZ = 8.3955898284912,
+		-- maxZ = 24.054468154907,
 		coords = {
 			vector2(1566.2053222656, 6478.884765625),
 			vector2(1552.7507324219, 6445.015625),
@@ -516,8 +520,8 @@ Config.zones = {
 		name = 'North Vinewood Park',
 		active = true,
 		type = 'poly',
-		minZ = 199.55363464355,
-		maxZ = 220.20584106445,
+		-- minZ = 199.55363464355,
+		-- maxZ = 220.20584106445,
 		coords = {
 			vector2(-722.5703125, 851.54412841797),
 			vector2(-728.01232910156, 846.53668212891),
@@ -554,8 +558,8 @@ Config.zones = {
 		name = 'Cottage Park',
 		active = true,
 		type = 'poly',
-		minZ = 66.502510070801,
-		maxZ = 72.464233398438,
+		-- minZ = 66.502510070801,
+		-- maxZ = 72.464233398438,
 		coords = {
 			vector2(-935.51080322266, 264.64047241211),
 			vector2(-953.86236572266, 271.49371337891),
@@ -598,8 +602,8 @@ Config.zones = {
 		name = 'Court House',
 		active = true,
 		type = 'poly',
-		minZ = 41.063034057617,
-		maxZ = 45.24654006958,
+		-- minZ = 41.063034057617,
+		-- maxZ = 45.24654006958,
 		coords = {
 			vector2(196.32427978516, -355.64190673828),
 			vector2(222.59237670898, -364.03707885742),

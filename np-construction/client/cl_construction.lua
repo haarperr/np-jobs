@@ -8,8 +8,8 @@ Citizen.CreateThread(function()
 		Citizen.Wait(1)
 		-- For debug only
 		if isInZone and assignedZone then
-			if IsControlJustPressed(1, 86) then 
-				attempToConstruct() -- This can be changed to an event handler so if you want to call it when you use an item
+			if IsControlJustPressed(1, 86) then  -- is 'E' pressed?
+				attemptTask() -- This can be changed to an event handler so if you want to call it when you use an item
 			end
 		end
 		exports.functions:showText(constructionStatus)
@@ -20,7 +20,7 @@ function attemptTask()
 	local hasRequiredTools = false
 	local playerServerId = GetPlayerServerId(PlayerId())
 
-	if Config.enableNopixelExports then
+	if Config.useNoPixelExports then
 		hasRequiredTools = exports["np-activities"]:hasInventoryItem(playerServerId, Config.requiredItem)
 	else
 		-- NOTE: This is for dev testing only, comment out or add better check here in production
@@ -31,17 +31,17 @@ function attemptTask()
 		local ped = PlayerPedId()
 		local playerCoord = GetEntityCoords(ped)
 		local target = GetOffsetFromEntityInWorldCoords(ped, vector3(0,2,-3))
-		local testRay = CastRayPointToPoint(playerCoord, target, 17, ped, 7)
+		local testRay = CastRayPointToPoint(playerCoord, target, 26, ped, 7)
 		local _, hit, hitLocation, surfaceNormal, taskObj, _ = GetRaycastResult(testRay)
-
+		model = GetEntityModel(taskObj)
+		print('Task Object:' .. taskObj .. ' || Object Model' .. model) -- for debug only || NOTE: comment out for production
 		for _, task in pairs(assignedZone.tasks) do
-			-- TODO: Add loop for all task object models here?
-			if task.object == taskObj then
-				TriggerServerEvent("np-mining:attemptTask", assignedZone, task)
+			if task.model == model then
+				TriggerServerEvent("np-construction:attemptTask", assignedZone, task)
 			end
 		end
 	else
-		sendNotification("You don't have the item to mine this rock.", playerServerId)
+		sendNotification("You don't have the item to do this task.", playerServerId)
 	end
 end
 
@@ -52,7 +52,7 @@ AddEventHandler("np-construction:assignedZone", function(zone)
 
 	-- TODO: Replace this with a function to generate all types of zones based on the zoneType ('box', 'circle', 'poly')
 	zone.area = createZone(zone)
-	if zone.area ~= nil
+	if zone.area ~= nil then
 		zone.area:onPlayerInOut(handlePlayerEnteringZone)
 
 		assignedZone = zone
@@ -60,7 +60,7 @@ AddEventHandler("np-construction:assignedZone", function(zone)
 		exports.functions:sendNotification('~g~You have been assigned to a new zone ' .. zone.name, playerServerId, Config.useNoPixelExports)
 
 		if Config.useNopixelExports then
-			exports["np-activities"]:activityInProgress(Config.activityName, playerServerId)
+			exports["np-activities"]:activityInProgress(Config.activityName, playerServerId, Config.timeToComplete)
 		else
 			exports.functions:sendNotification("~g~Activity in progress", playerServerId, Config.useNoPixelExports)
 		end
@@ -90,20 +90,21 @@ AddEventHandler("np-construction:clearAssignedZone", function(zone)
 end)
 
 -- Called when we are interacting with a valid task model
-RegisterNetEvent("np-construction:beginConstruction")
-AddEventHandler("np-construction:beginConstruction", function(zone, task, hitsNeeded, source)
+RegisterNetEvent("np-construction:beginTask")
+AddEventHandler("np-construction:beginTask", function(zone, task, requiredHits, source)
 	local playerServerId = GetPlayerServerId(PlayerId())
 
 	isCurrentlyConstructing = true
 
+	print('^6BEGIN: ' .. task.id)
 	if Config.useNoPixelExports then
-		exports["np-activities"]:taskInProgress(Config.activityName, playerServerId, 'started_constructing_' .. task.id, 'Started Construction...')
+		exports["np-activities"]:taskInProgress(Config.activityName, playerServerId, 'started_task_' .. task.id, 'Started Task...')
 	else
-		exports.functions:sendNotification('~g~started_constructing_'..task.id, playerServerId, Config.useNoPixelExports)
+		exports.functions:sendNotification('~g~started_task_'..task.id, playerServerId, Config.useNoPixelExports)
 	end
 
 	-- TODO: Check task and get proper animation based on object model being interacted with???
-	startTaskAnimation(zone, GetPlayerPed(-1), task, hitsNeeded, source)
+	startTaskAnimation(zone, GetPlayerPed(-1), task, requiredHits, source)
 end)
 
 -- Called when we are done with a task

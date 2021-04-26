@@ -24,7 +24,7 @@ AddEventHandler("np-construction:assignZone", function()
 	local zoneList = Config.zones -- Stored so I can remove any zones if the person already did it and choose from that list
 
 	-- Let me check if player hit zone limit during this run?
-	if playersZonesCompleted[source] ~= nil and #playersZonesCompleted[source] >= Config.zone_limit then
+	if playersZonesCompleted[source] ~= nil and #playersZonesCompleted[source] >= Config.zoneLimit then
 		TriggerEvent("np-construction:completeRun", source)
 		return print('You have completed max amount of zones this run')	 -- Notify User with UI
 	end
@@ -57,8 +57,7 @@ end)
 -- Called when player tries to do a task
 RegisterServerEvent("np-construction:attemptTask")
 AddEventHandler("np-construction:attemptTask", function(assignedZone, attemptedTask)
-
-	-- Look for which zone theyre in
+	-- Look for which zone they are in
 	for _, zone in pairs(Config.zones) do
 		for _, task in pairs(zone.tasks) do
 
@@ -79,14 +78,14 @@ AddEventHandler("np-construction:attemptTask", function(assignedZone, attemptedT
 					end
 
 					if playersTasksTotal[source].zone == zone.id then
-						if playersTasksTotal[source].amount >= zone.maxMineAmount then
+						if playersTasksTotal[source].amount >= zone.taskLimit then
 							return print("You can no longer mine in this zone for now. " .. playersTasksTotal[source].zone)
 						else
 							playersTasksTotal[source].amount = playersTasksTotal[source].amount + 1
 							print("Starting task " .. playersTasksTotal[source].amount)
-							rock.isBeingUsed = true
-							rock.beingUsedBy = source
-							TriggerClientEvent("np-construction:beginTask", source, zone, task, Config.requiredRockHits, source)
+							task.isBeingUsed = true
+							task.beingUsedBy = source
+							TriggerClientEvent("np-construction:beginTask", source, zone, task, Config.requiredHits, source)
 							return
 						end
 					end
@@ -99,14 +98,10 @@ end)
 -- Called when player is done with task
 RegisterServerEvent("np-construction:completedTask")
 AddEventHandler("np-construction:completedTask", function(assignedZone, attemptedTask, source)
-
 	Citizen.CreateThread(function()
 		for _, zone in pairs(Config.zones) do
-	
 			if assignedZone.id == zone.id then
-	
 				for _, task in pairs(zone.tasks) do
-		
 					if task.id == attemptedTask.id then
 						task.isBeingUsed = false
 						task.isUsed = true
@@ -119,10 +114,10 @@ AddEventHandler("np-construction:completedTask", function(assignedZone, attempte
 						-- 	TriggerClientEvent("np-construction:collectRock", source, zone, rock, "rock") -- Notify User with UI
 						-- end
 
-						TriggerClientEvent("np-construction:collectRock", source, zone, task, "rock")
+						-- TriggerClientEvent("np-construction:collectRock", source, zone, task, "rock")
 	
 						-- Player completed enough tasks here needs to go to another zone
-						if playersTasksTotal[source].zone == zone.id and playersTasksTotal[source].amount >= zone.maxMineAmount then
+						if playersTasksTotal[source].zone == zone.id and playersTasksTotal[source].amount >= zone.taskLimit then
 							-- Todo
 
 							if (playersZonesCompleted[source] == nil) then
@@ -132,7 +127,9 @@ AddEventHandler("np-construction:completedTask", function(assignedZone, attempte
 							table.insert(playersZonesCompleted[source], assignedZone.id)
 
 							print("Player is done in this zone move on. " .. playersZonesCompleted[source][1]) -- Notify User with UI
-							TriggerClientEvent("np-construction:unassignZone", source)
+							TriggerClientEvent("np-construction:clearAssignedZone", source)
+						elseif playersTasksTotal[source].zone == zone.id and playersTasksTotal[source].amount < zone.taskLimit then
+							print('Task' .. playersTasksTotal[source].amount .. '/' .. zone.taskLimit .. 'Completed')
 						end
 					end
 				end

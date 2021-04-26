@@ -28,6 +28,10 @@ end
 --
 -- Variables
 --
+Config.useRandTimeToComplete = true -- (boolean) Use a ranom task limit at each job site?
+Config.minTimeToComplete = 1800000 -- (integer) Minimum number of milliseconds the job offer is good for before expiring/failing || NOTE: 180000 = 30 minutes
+Config.maxTimeToComplete = 3600000-- (integer) Maximum number of milliseconds the job offer is good for before expiring/failing || NOTE: 360000 = 60 minutes
+Config.requiredHits = 3 -- (integer) Number of animation cycles required to complete the task
 Config.maxGroupSize = 2 -- (integer) Maximum players allowed in the job center group for this job
 Config.zoneLimit = 2 -- (integer) Number of zones to complete before the "task" is flagged as "completed"
 Config.useRandTaskLimit = true -- (boolean) Use a ranom task limit at each job site?
@@ -47,9 +51,9 @@ Config.payment = { -- job completion payment settings
 -- Custom Function to generate taskLimit for each zone
 Config.getTaskLimit = function()
 	if Config.useRandTaskLimit then
-		Config.taskLimit = math.random(Config.minTaskLimit, Config.maxTaskLimit) -- (integer) set random taskLimit between Config.minTaskLimit & Config.maxTaskLimit
+		return math.random(Config.minTaskLimit, Config.maxTaskLimit) -- (integer) set random taskLimit between Config.minTaskLimit & Config.maxTaskLimit
 	else
-		Config.taskLimit = Config.minTaskLimit -- (integer) uses the minTaskLimit param above
+		return Config.minTaskLimit -- (integer) uses the minTaskLimit param above
 	end
 end
 

@@ -83,9 +83,9 @@ function createZone(zone)
 	return area
 end
 
-function startTaskAnimation(zone, ped, task, hitsNeeded, source)
+function startTaskAnimation(zone, ped, task, requiredHits, source)
 	local hitsDone = 0
-	local hitsRequired = hitsNeeded
+	local hitsRequired = requiredHits
   
 	Citizen.CreateThread(function()
 		while hitsDone < hitsRequired do
@@ -112,7 +112,7 @@ function startTaskAnimation(zone, ped, task, hitsNeeded, source)
 			ClearPedTasks(ped)
 			hitsDone = hitsDone + 1
 	
-			if hitsDone >= hitsNeeded then
+			if hitsDone >= requiredHits then
 				removePlayerTool()
 				Citizen.Wait(250)
 				-- pickupRock() -- Called to hold rock in hand with animation until player puts the item in the truck/car?

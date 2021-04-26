@@ -20,14 +20,16 @@ if Config.requireMultipleItems then
 		'heavyboltcutter'
 	}
 else
-	Config.requiredItems = {
-		'toolbelt'
-	}
+	Config.requiredItem = 'toolbelt'
 end
 
 --
 -- Variables
 --
+Config.useRandTimeToComplete = true -- (boolean) Use a ranom task limit at each job site?
+Config.minTimeToComplete = 1800000 -- (integer) Minimum number of milliseconds the job offer is good for before expiring/failing || NOTE: 180000 = 30 minutes
+Config.maxTimeToComplete = 3600000-- (integer) Maximum number of milliseconds the job offer is good for before expiring/failing || NOTE: 360000 = 60 minutes
+Config.requiredHits = 3 -- (integer) Number of animation cycles required to complete the task
 Config.maxGroupSize = 4 -- (integer) Maximum players allowed in the job center group for this job
 Config.zoneLimit = 2 -- (integer) Number of zones to complete before the "task" is flagged as "completed"
 Config.useRandTaskLimit = true -- (boolean) Use a ranom task limit at each job site?
@@ -47,9 +49,18 @@ Config.payment = { -- job completion payment settings
 -- Custom Function to generate taskLimit for each zone
 Config.getTaskLimit = function()
 	if Config.useRandTaskLimit then
-		Config.taskLimit = math.random(Config.minTaskLimit, Config.maxTaskLimit) -- (integer) set random taskLimit between Config.minTaskLimit & Config.maxTaskLimit
+		return math.random(Config.minTaskLimit, Config.maxTaskLimit) -- (integer) set random taskLimit between Config.minTaskLimit & Config.maxTaskLimit
 	else
-		Config.taskLimit = Config.minTaskLimit -- (integer) uses the minTaskLimit param above
+		return Config.minTaskLimit -- (integer) uses the minTaskLimit param above
+	end
+end
+
+-- Custom Function to generate timeToComplete for each zone
+Config.getTimeToComplete = function()
+	if Config.useRandTimeToComplete then
+		Config.timeToComplete = math.random(Config.minTimeToComplete, Config.maxTimeToComplete) -- (integer) set random timeToComplete between Config.minTimeToComplete & Config.maxTimeToComplete
+	else
+		Config.timeToComplete = Config.minTimeToComplete -- (integer) default to minimum time to complete value
 	end
 end
 
@@ -75,9 +86,9 @@ Config.zones = {
 		coords = vector3(74.04, 6535.2, 31.39),
 		taskLimit = Config.getTaskLimit(),
 		tasks = {
-			{ id = 'activity_1', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
-			{ id = 'activity_2', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
-			{ id = 'activity_3', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil }
+			{ id = 'activity_1', model = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
+			{ id = 'activity_2', model = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
+			{ id = 'activity_3', model = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil }
 		},
 		blip = {
 			icon = 0,
@@ -97,9 +108,36 @@ Config.zones = {
 		coords = vector3(-327.41, 6303.54, 35.65),
 		taskLimit = Config.getTaskLimit(),
 		tasks = {
-			{ id = 'activity_1', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
-			{ id = 'activity_2', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
-			{ id = 'activity_3', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil }
+			{ id = 'mix_cement', name = 'Mix Cement', model = -500221685, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
+			{ id = 'mix_cement_2', name = 'Mix Cement', model = -2113539824, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
+			{ id = 'open_cement_bags', name = 'Open Cement Bags', model = 1899123601, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
+			{ id = 'clean_potty', name = 'Clean Port-a-Potty', model = 682074297, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
+			{ id = 'collect_lumber', name = 'Collect Lumber', model = 1861370687, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
+			{ id = 'check_trash', name = 'Check Trash', model = -515278816, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil }
+		},
+		blip = {
+			icon = 0,
+			coords = vector3(0.0, 0.0, 0.0),
+		},
+	},
+	{
+		id = 'paleto_house_2',
+		name = 'Paleto House 2',
+		active = true,
+		type = 'box',
+		heading = 46,
+		length = 42.0,
+		width = 19.2,
+		minZ = 29.08,
+		maxZ = 33.08,
+		coords = vector3(-382.82, 6257.79, 30.08),
+		taskLimit = Config.getTaskLimit(),
+		tasks = {
+			{ id = 'mix_cement_2', name = 'Mix Cement', model = -2113539824, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
+			{ id = 'prepare_cinder_blocks', name = 'Prepare Cinder Blocks', model = -1951226014, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
+			{ id = 'repair_fence', name = 'Repair Chainlink Fence', model = -928338834, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
+			{ id = 'cut_wood', name = 'Cut Wood (2x4)', model = 31071109, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
+			{ id = 'collect_ladder', name = 'Collect Ladder', model = -2096130282, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil }
 		},
 		blip = {
 			icon = 0,
@@ -119,9 +157,9 @@ Config.zones = {
 		coords = vector3(133.83, 6442.29, 31.2),
 		taskLimit = Config.getTaskLimit(),
 		tasks = {
-			{ id = 'activity_1', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
-			{ id = 'activity_2', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
-			{ id = 'activity_3', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil }
+			{ id = 'activity_1', model = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
+			{ id = 'activity_2', model = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
+			{ id = 'activity_3', model = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil }
 		},
 		blip = {
 			icon = 0,
@@ -150,9 +188,9 @@ Config.zones = {
 		},
 		taskLimit = Config.getTaskLimit(),
 		tasks = {
-			{ id = 'activity_1', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
-			{ id = 'activity_2', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
-			{ id = 'activity_3', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil }
+			{ id = 'activity_1', model = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
+			{ id = 'activity_2', model = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
+			{ id = 'activity_3', model = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil }
 		},
 		blip = {
 			icon = 0,
@@ -172,9 +210,9 @@ Config.zones = {
 		coords = vector3(1285.75, -1765.23, 51.78),
 		taskLimit = Config.getTaskLimit(),
 		tasks = {
-			{ id = 'activity_1', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
-			{ id = 'activity_2', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
-			{ id = 'activity_3', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil }
+			{ id = 'activity_1', model = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
+			{ id = 'activity_2', model = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
+			{ id = 'activity_3', model = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil }
 		},
 		blip = {
 			icon = 0,
@@ -207,9 +245,9 @@ Config.zones = {
 		},
 		taskLimit = Config.getTaskLimit(),
 		tasks = {
-			{ id = 'activity_1', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
-			{ id = 'activity_2', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
-			{ id = 'activity_3', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil }
+			{ id = 'activity_1', model = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
+			{ id = 'activity_2', model = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
+			{ id = 'activity_3', model = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil }
 		},
 		blip = {
 			icon = 0,
@@ -233,9 +271,9 @@ Config.zones = {
 		},
 		taskLimit = Config.getTaskLimit(),
 		tasks = {
-			{ id = 'activity_1', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
-			{ id = 'activity_2', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
-			{ id = 'activity_3', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil }
+			{ id = 'activity_1', model = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
+			{ id = 'activity_2', model = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
+			{ id = 'activity_3', model = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil }
 		},
 		blip = {
 			icon = 0,
@@ -255,9 +293,9 @@ Config.zones = {
 		coords = vector3(-2008.5, 547.96, 110.65),
 		taskLimit = Config.getTaskLimit(),
 		tasks = {
-			{ id = 'activity_1', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
-			{ id = 'activity_2', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
-			{ id = 'activity_3', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil }
+			{ id = 'activity_1', model = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
+			{ id = 'activity_2', model = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
+			{ id = 'activity_3', model = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil }
 		},
 	},
 	{
@@ -286,9 +324,9 @@ Config.zones = {
 		},
 		taskLimit = Config.getTaskLimit(),
 		tasks = {
-			{ id = 'activity_1', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
-			{ id = 'activity_2', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
-			{ id = 'activity_3', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil }
+			{ id = 'activity_1', model = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
+			{ id = 'activity_2', model = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
+			{ id = 'activity_3', model = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil }
 		},
 		blip = {
 			icon = 0,
@@ -312,9 +350,9 @@ Config.zones = {
 		},
 		taskLimit = Config.getTaskLimit(),
 		tasks = {
-			{ id = 'activity_1', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
-			{ id = 'activity_2', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
-			{ id = 'activity_3', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil }
+			{ id = 'activity_1', model = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
+			{ id = 'activity_2', model = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
+			{ id = 'activity_3', model = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil }
 		},
 		blip = {
 			icon = 0,
@@ -344,9 +382,9 @@ Config.zones = {
 		},
 		taskLimit = Config.getTaskLimit(),
 		tasks = {
-			{ id = 'activity_1', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
-			{ id = 'activity_2', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
-			{ id = 'activity_3', object = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil }
+			{ id = 'activity_1', model = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
+			{ id = 'activity_2', model = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
+			{ id = 'activity_3', model = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil }
 		},
 		blip = {
 			icon = 0,
