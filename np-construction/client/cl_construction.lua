@@ -134,7 +134,7 @@ AddEventHandler("np-construction:stopConstruction", function(successful)
 	isInZone = false
 	isCurrentlyConstructing = false
 	-- was the job was completed or cancelled?
-	if successful do
+	if successful then
 		if Config.useNopixelExports then
 			exports["np-activities"]:activityCompleted(Config.activityName, playerServerId, successful, 'Player completed the job!')
 		else

@@ -105,10 +105,8 @@ AddEventHandler("np-construction:completedTask", function(assignedZone, attempte
 					if task.id == attemptedTask.id then
 						task.isBeingUsed = false
 						task.isUsed = true
-			
 						-- tell client the task is complete
 						TriggerClientEvent("np-construction:completeTask", source, zone, task)
-	4
 						-- Player completed enough tasks here needs to go to another zone
 						if playersTasksTotal[source].zone == zone.id and playersTasksTotal[source].amount >= zone.taskLimit then
 							if (playersZonesCompleted[source] == nil) then
@@ -139,7 +137,7 @@ AddEventHandler("np-construction:completeRun", function(src)
 	
 	-- Get rewards based on config values
 	rewards = Config.getRewards()
-	if rewards.cash ~= nil do
+	if rewards.cash ~= nil then
 		-- TODO: replace with proper export to add cash to paystub at the foreman
 		exports["np-activities"]:addCashToPaySlip(playerServerId, rewards.cash)
 	end
