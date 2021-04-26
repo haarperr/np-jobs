@@ -67,7 +67,7 @@ AddEventHandler("np-construction:attemptTask", function(assignedZone, attemptedT
 				end
 
 				if task.isBeingUsed then
-					return print("Rock is currently being used") -- Notify User with UI
+					return print("Object is currently being used") -- Notify User with UI
 				end
 
 				if zone.id == assignedZone.id then
@@ -106,20 +106,11 @@ AddEventHandler("np-construction:completedTask", function(assignedZone, attempte
 						task.isBeingUsed = false
 						task.isUsed = true
 			
-						-- Figure out what they got (Could either do check here or give them just a rock and when they go to NPC it chooses randomly there.)
-						-- local chance = math.random(0, 100)
-						-- if chance < 50 then
-						-- 	TriggerClientEvent("np-construction:collectRock", source, zone, rock, "gem") -- Notify User with UI
-						-- else
-						-- 	TriggerClientEvent("np-construction:collectRock", source, zone, rock, "rock") -- Notify User with UI
-						-- end
-
-						-- TriggerClientEvent("np-construction:collectRock", source, zone, task, "rock")
-	
+						-- tell client the task is complete
+						TriggerClientEvent("np-construction:completeTask", source, zone, task)
+	4
 						-- Player completed enough tasks here needs to go to another zone
 						if playersTasksTotal[source].zone == zone.id and playersTasksTotal[source].amount >= zone.taskLimit then
-							-- Todo
-
 							if (playersZonesCompleted[source] == nil) then
 								playersZonesCompleted[source] = {}
 							end
@@ -129,7 +120,7 @@ AddEventHandler("np-construction:completedTask", function(assignedZone, attempte
 							print("Player is done in this zone move on. " .. playersZonesCompleted[source][1]) -- Notify User with UI
 							TriggerClientEvent("np-construction:clearAssignedZone", source)
 						elseif playersTasksTotal[source].zone == zone.id and playersTasksTotal[source].amount < zone.taskLimit then
-							print('Task' .. playersTasksTotal[source].amount .. '/' .. zone.taskLimit .. 'Completed')
+							print('Task ' .. playersTasksTotal[source].amount .. '/' .. zone.taskLimit .. ' Completed')
 						end
 					end
 				end
@@ -141,9 +132,28 @@ end)
 -- Called when the player completed their assigned amount of zones
 RegisterServerEvent("np-construction:completeRun")
 AddEventHandler("np-construction:completeRun", function(src)
+	local rewards = nil
+
 	playersTasksTotal[src] = nil -- Remove how many tasks they completed
-	playersZonesCompleted[src] = nil -- Remove them from zones completed so when they strart the job again after a "cooldown" its backto default
-	TriggerClientEvent("np-construction:stopConstruction", src) -- Now lets tell client theyre not assigned a zone and reset their variables
+	playersZonesCompleted[src] = nil -- Remove them from zones completed so when they strart the job again after a "cooldown" its back to default
+	
+	-- Get rewards based on config values
+	rewards = Config.getRewards()
+	if rewards.cash ~= nil do
+		-- TODO: replace with proper export to add cash to paystub at the foreman
+		exports["np-activities"]:addCashToPaySlip(playerServerId, rewards.cash)
+	end
+
+	for _, item in pairs(rewards.items) do
+		if Config.useNoPixelExports then
+			exports["np-activities"]:giveInventoryItem(playerServerId, item.id, item.amount)
+		else
+			exports.functions:sendNotification('~y~Paid - ' .. item.amount .. item.id, playerServerId, Config.useNoPixelExports)
+			print('~y~Paid - ' .. item.amount .. item.id) -- NOTE: Used for Debugging, comment out in production
+		end
+	end
+	
+	TriggerClientEvent("np-construction:stopConstruction", true) -- Now lets tell client theyre not assigned a job and reset their variables
 end)
 
 -- NOTE: Debug event used to generate rock coords, comment out before using in production

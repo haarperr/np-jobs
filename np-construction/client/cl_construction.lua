@@ -50,7 +50,7 @@ RegisterNetEvent("np-construction:assignedZone")
 AddEventHandler("np-construction:assignedZone", function(zone)
 	local playerServerId = GetPlayerServerId(PlayerId())
 
-	-- TODO: Replace this with a function to generate all types of zones based on the zoneType ('box', 'circle', 'poly')
+	-- Create the polyzone
 	zone.area = createZone(zone)
 	if zone.area ~= nil then
 		zone.area:onPlayerInOut(handlePlayerEnteringZone)
@@ -73,7 +73,7 @@ AddEventHandler("np-construction:clearAssignedZone", function(zone)
 	local playerServerId = GetPlayerServerId(PlayerId())
 
 	Citizen.CreateThread(function()
-		constructionStatus = 'Looking for zone'
+		constructionStatus = 'Looking for zone...'
 		assignedZone.area:destroy()
 		assignedZone = nil
 		isInZone = false
@@ -109,23 +109,20 @@ end)
 
 -- Called when we are done with a task
 RegisterNetEvent("np-construction:completeTask")
-AddEventHandler("np-construction:completeTask", function(zone, task, reward)
+AddEventHandler("np-construction:completeTask", function(zone, task)
 	local playerServerId = GetPlayerServerId(PlayerId())
 	isCurrentlyConstructing = false
 
 	if Config.useNoPixelExports then
-		exports["np-activities"]:giveInventoryItem(playerServerId, reward, 1)
-		exports["np-activities"]:taskCompleted(Config.activityName, playerServerId, 'started_constructing_' .. task.id, true, 'Construction Complete!')
+		exports["np-activities"]:taskCompleted(Config.activityName, playerServerId, 'Completed Task: ' .. task.id, true, 'Construction Complete!')
 	else
-		exports.functions:sendNotification("~g~finished_constructing_" .. task.id, playerServerId, Config.useNoPixelExports)
+		exports.functions:sendNotification("~g~Completed Task: " .. task.id, playerServerId, Config.useNoPixelExports)
 	end
-
-	exports.functions:sendNotification("~g~Construction Completed and received a " .. reward, playerServerId, Config.useNoPixelExports)
 end)
 
 -- Called when user wants to stop construction
 RegisterNetEvent("np-construction:stopConstruction")
-AddEventHandler("np-construction:stopConstruction", function(zone, activity)
+AddEventHandler("np-construction:stopConstruction", function(successful)
 	local playerServerId = GetPlayerServerId(PlayerId())
 
 	if assignedZone ~= nil then
@@ -133,14 +130,22 @@ AddEventHandler("np-construction:stopConstruction", function(zone, activity)
 	end
 
 	assignedZone = nil
-	constructionStatus = "No Task Assigned"
+	constructionStatus = "No Job Assigned"
 	isInZone = false
 	isCurrentlyConstructing = false
-
-	if Config.useNopixelExports then
-		exports["np-activities"]:activityCompleted(Config.activityName, playerServerId, true, 'Player either completed or cancelled their task!')
+	-- was the job was completed or cancelled?
+	if successful do
+		if Config.useNopixelExports then
+			exports["np-activities"]:activityCompleted(Config.activityName, playerServerId, successful, 'Player completed the job!')
+		else
+			exports.functions:sendNotification('~g~Job completed!', playerServerId, Config.useNoPixelExports)
+		end
 	else
-		exports.functions:sendNotification('~g~Activity was completed or cancelled', playerServerId, Config.useNoPixelExports)
+		if Config.useNopixelExports then
+			exports["np-activities"]:activityCompleted(Config.activityName, playerServerId, successful, 'Player cancelled the job!')
+		else
+			exports.functions:sendNotification('~r~Job cancelled!', playerServerId, Config.useNoPixelExports)
+		end
 	end
 end)
 

@@ -18,7 +18,7 @@ end, false)
 
 -- Call event to remove you from the construction job
 RegisterCommand("stop_construction", function(source, args)
-	TriggerEvent("np-construction:stopConstruction")
+	TriggerEvent("np-construction:stopConstruction", false)
 end, false)
   
   
