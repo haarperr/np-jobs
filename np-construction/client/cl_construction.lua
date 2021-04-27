@@ -1,15 +1,15 @@
 local activityName = Config.activityName
 local assignedZone = nil
 local isInZone = false
-local constructionStatus = 'Waiting for a job assignment...'
-local isCurrentlyConstructing = false
+local jobStatus = 'Waiting for a job assignment...'
+local isCurrentlyWorking = false
 local jobBlip = 0
 
 -- NOTE: For debug only
 -- Citizen.CreateThread(function()
 -- 	while true do
 -- 		Citizen.Wait(1)
--- 		exports["functions"]:showText(constructionStatus)
+-- 		exports["functions"]:showText(jobStatus)
 -- 	end
 -- end)
 
@@ -68,7 +68,7 @@ AddEventHandler("np-construction:assignedZone", function(zone)
 	if zone.area ~= nil then
 		zone.area:onPlayerInOut(handlePlayerEnteringZone)
 		assignedZone = zone
-		constructionStatus = "Assigned to zone - " .. assignedZone.name
+		jobStatus = "Assigned to zone - " .. assignedZone.name
 
 		if Config.useNopixelExports then
 			exports["np-activities"]:activityInProgress(activityName, playerServerId, Config.timeToComplete)
@@ -97,7 +97,7 @@ AddEventHandler("np-construction:clearAssignedZone", function(zone)
 	local wait = Config.getZoneAssignmentDelay() -- (integer) wait random amount of time based on config settings before assigning next zone
 
 	Citizen.CreateThread(function()
-		constructionStatus = 'Waiting for a job assignment...'
+		jobStatus = 'Waiting for a job assignment...'
 		assignedZone.area:destroy()
 		assignedZone = nil
 		isInZone = false
@@ -112,7 +112,7 @@ end)
 RegisterNetEvent("np-construction:beginTask")
 AddEventHandler("np-construction:beginTask", function(zone, task, requiredHits, source)
 	local playerServerId = GetPlayerServerId(PlayerId())
-	isCurrentlyConstructing = true
+	isCurrentlyWorking = true
 
 	-- print('^6BEGIN: ' .. task.id)
 	if Config.useNoPixelExports then
@@ -129,7 +129,7 @@ end)
 RegisterNetEvent("np-construction:completeTask")
 AddEventHandler("np-construction:completeTask", function(zone, task)
 	local playerServerId = GetPlayerServerId(PlayerId())
-	isCurrentlyConstructing = false
+	isCurrentlyWorking = false
 
 	if Config.useNoPixelExports then
 		exports["np-activities"]:taskCompleted(activityName, playerServerId, 'Completed Task: ' .. task.id, true, 'Construction Complete!')
@@ -148,9 +148,9 @@ AddEventHandler("np-construction:stopJob", function(successful)
 	end
 
 	assignedZone = nil
-	constructionStatus = "No Job Assigned"
+	jobStatus = "No Job Assigned"
 	isInZone = false
-	isCurrentlyConstructing = false
+	isCurrentlyWorking = false
 	-- was the job was completed or cancelled?
 	if successful then
 		if Config.useNopixelExports then
@@ -238,7 +238,7 @@ function handlePlayerEnteringZone(isPointInside, point)
 
 			generateTaskObjs(assignedZone.tasks, assignedZone.prop)
 			isInZone = true
-			constructionStatus = 'Complete tasks!'
+			jobStatus = 'Complete tasks!'
 		else
 			-- Notify Player
 			if Config.useNopixelExports then
@@ -249,7 +249,7 @@ function handlePlayerEnteringZone(isPointInside, point)
 
 			removeTaskObjs(assignedZone.tasks)
 			isInZone = false
-			constructionStatus = "Go to the job site - " .. assignedZone.name
+			jobStatus = "Go to the job site - " .. assignedZone.name
 		end
 	end
 end
