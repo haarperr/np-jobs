@@ -1,12 +1,12 @@
 Config = {}
 
 Config.enabled = true -- (boolean) is the job enabled?
-Config.actviityName = 'activity_construction'
+Config.activityName = 'activity_construction'
 Config.jobName = 'Construction Worker'
 Config.initMessage = 'Construction Loaded' -- (string) text to print
 
 -- Enable NoPixel Exports
-Config.useNoPixelExports = false
+Config.useNoPixelExports = true
 
 -- Set required items for player to complete job tasks
 Config.requireMultipleItems = false -- (boolean) does this job require multiple items?
@@ -36,7 +36,10 @@ Config.useRandTaskLimit = true -- (boolean) Use a ranom task limit at each job s
 Config.minTaskLimit = 2 -- (integer) Minimum number of tasks required to complete a zone || NOTE: if useRandTaskLimit = false, this value becomes the default taskLimit for each zone
 Config.maxTaskLimit = 5 -- (integer) Maximum number of tasks required to complete a zone
 Config.useRandRewards = true -- (boolean) Use a ranom payments?
-Config.rewards = { -- job completion payment settings
+Config.useRandZoneAssignmentDelay = false -- (boolean) Use a ranom zone assignment delay?
+Config.minZoneAssignmentDelay = 5000 -- (integer) Minimum amount of time in ms to delay before assigning the next zone during a job
+Config.maxZoneAssignmentDelay = 15000 -- (integer) Maximum amount of time in ms to delay before assigning the next zone during a job
+Config.rewards = { -- Job completion payment settings
 	cash = {
 		min = 100, -- (integer) min amount of cash the job can pay out to each player
 		max = 200, -- (integer) max amount of cash the job can pay out to each player
@@ -81,16 +84,26 @@ Config.getRewards = function()
 	end
 	
 	-- Build Rewards Table (object/array)
-	table.insert(rewards[cash], cash)
+	rewards.cash = cash
+	rewards.items = {}
 	for _, item in pairs(items) do
 		if Config.useRandRewards then	
-			table.insert(rewards['items'], { ['id'] = item.id, ['amount'] = math.random(item.min, item.max) })
+			table.insert(rewards.items, { ['id'] = item.id, ['amount'] = math.random(item.min, item.max) })
 		else
-			table.insert(rewards['items'], { ['id'] = item.id, ['amount'] = item.min })
+			table.insert(rewards.items, { ['id'] = item.id, ['amount'] = item.min })
 		end
 	end
-
+	-- print(json.encode(rewards))
 	return rewards
+end
+
+-- Custom Function to generate zone assignment delay for a job
+Config.getZoneAssignmentDelay = function()
+	if Config.useRandZoneAssignmentDelay then
+		return math.random(Config.minZoneAssignmentDelay, Config.maxZoneAssignmentDelay) -- (integer) set random taskLimit between Config.minTaskLimit & Config.maxTaskLimit
+	else
+		return Config.minZoneAssignmentDelay -- (integer) uses the minTaskLimit param above
+	end
 end
 
 ---
@@ -115,12 +128,12 @@ Config.zones = {
 		coords = vector3(74.04, 6535.2, 31.39),
 		taskLimit = Config.getTaskLimit(),
 		tasks = {
-			{ id = 'open_cement_bags', name = 'Open Cement Bags', model = 1899123601, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
-			{ id = 'refuel_generator', name = 'Refuel Generator', model = -1591940045, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
-			{ id = 'refuel_generator_2', name = 'Refuel Generator', model = -57215983, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
-			{ id = 'collect_lumber', name = 'Collect Lumber', model = 1367246936, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
-			{ id = 'fix_caution_fence', name = 'Fix Caution Fence', model = 710800597, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
-			{ id = 'fix_caution_fence_2', name = 'Fix Caution Fence', model = 1469496946, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil }
+			{ id = 'open_cement_bags', name = 'Open Cement Bags', model = 1899123601, tool = 'prop_tool_pliers', coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
+			{ id = 'fix_generator', name = 'Fix Generator', model = -1591940045, tool = 'prop_tool_pliers', coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
+			{ id = 'fix_generator_2', name = 'Fix Generator 2', model = -57215983, tool = 'prop_tool_pliers', coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
+			{ id = 'collect_lumber', name = 'Collect Lumber', model = 1367246936, tool = 'prop_tool_consaw', coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
+			{ id = 'fix_caution_fence', name = 'Fix Caution Fence', model = 710800597, tool = 'prop_tool_hammer', coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
+			{ id = 'fix_caution_fence_2', name = 'Fix Caution Fence', model = 1469496946, tool = 'prop_tool_hammer', coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil }
 			-- TODO: add support for polyzone based tasks for digging, hammering, sawing & cutting, etc.
 		},
 		blip = {
@@ -141,12 +154,12 @@ Config.zones = {
 		coords = vector3(-327.41, 6303.54, 35.65),
 		taskLimit = Config.getTaskLimit(),
 		tasks = {
-			{ id = 'mix_cement', name = 'Mix Cement', model = -500221685, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
-			{ id = 'mix_cement_2', name = 'Mix Cement', model = -2113539824, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
-			{ id = 'open_cement_bags', name = 'Open Cement Bags', model = 1899123601, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
-			{ id = 'clean_potty', name = 'Clean Port-a-Potty', model = 682074297, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
-			{ id = 'collect_lumber', name = 'Collect Lumber', model = 1861370687, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
-			{ id = 'check_trash', name = 'Check Trash', model = -515278816, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil }
+			{ id = 'mix_cement', name = 'Mix Cement', model = -500221685, tool = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
+			{ id = 'mix_cement_2', name = 'Mix Cement', model = -2113539824, tool = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
+			{ id = 'open_cement_bags', name = 'Open Cement Bags', model = 1899123601, tool = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
+			{ id = 'clean_potty', name = 'Clean Port-a-Potty', model = 682074297, tool = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
+			{ id = 'collect_lumber', name = 'Collect Lumber', model = 1861370687, tool = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
+			{ id = 'check_trash', name = 'Check Trash', model = -515278816, tool = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil }
 		},
 		blip = {
 			icon = 0,
@@ -166,11 +179,11 @@ Config.zones = {
 		coords = vector3(-382.82, 6257.79, 30.08),
 		taskLimit = Config.getTaskLimit(),
 		tasks = {
-			{ id = 'mix_cement_2', name = 'Mix Cement', model = -2113539824, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
-			{ id = 'prepare_cinder_blocks', name = 'Prepare Cinder Blocks', model = -1951226014, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
-			{ id = 'destroy_pallate', name = 'Destroy Pallate', model = 830159341, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
-			{ id = 'cut_wood', name = 'Cut Wood (2x4)', model = 31071109, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
-			{ id = 'repair_brick_wall', name = 'Repair Brick Wall', model = -1744550758, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil }
+			{ id = 'mix_cement_2', name = 'Mix Cement', model = -2113539824, tool = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
+			{ id = 'prepare_cinder_blocks', name = 'Prepare Cinder Blocks', model = -1951226014, tool = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
+			{ id = 'destroy_pallate', name = 'Destroy Pallate', model = 830159341, tool = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
+			{ id = 'cut_wood', name = 'Cut Wood (2x4)', model = 31071109, tool = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
+			{ id = 'repair_brick_wall', name = 'Repair Brick Wall', model = -1744550758, tool = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil }
 		},
 		blip = {
 			icon = 0,
@@ -190,13 +203,13 @@ Config.zones = {
 		coords = vector3(133.83, 6442.29, 31.2),
 		taskLimit = Config.getTaskLimit(),
 		tasks = {
-			{ id = 'open_cement_bags', name = 'Open Cement Bags', model = 1899123601, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
-			{ id = 'prepare_cinder_blocks', name = 'Prepare Cinder Blocks', model = -1951226014, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
-			{ id = 'destroy_wood_spool', name = 'Destroy Wood Spool', model = 2111998691, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
-			{ id = 'cut_iron_beams', name = 'Cut Iron Beams', model = 1723816705, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
-			{ id = 'refuel_generator', name = 'Refuel Generator', model = -1775229459, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
-			{ id = 'refuel_generator_2', name = 'Refuel Generator', model = -57215983, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
-			{ id = 'clean_port_a_potty', name = 'Clean Port-a-Potty', model = 682074297, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
+			{ id = 'open_cement_bags', name = 'Open Cement Bags', model = 1899123601, tool = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
+			{ id = 'prepare_cinder_blocks', name = 'Prepare Cinder Blocks', model = -1951226014, tool = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
+			{ id = 'destroy_wood_spool', name = 'Destroy Wood Spool', model = 2111998691, tool = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
+			{ id = 'cut_iron_beams', name = 'Cut Iron Beams', model = 1723816705, tool = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
+			{ id = 'refuel_generator', name = 'Refuel Generator', model = -1775229459, tool = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
+			{ id = 'refuel_generator_2', name = 'Refuel Generator', model = -57215983, tool = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
+			{ id = 'clean_port_a_potty', name = 'Clean Port-a-Potty', model = 682074297, tool = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
 		},
 		blip = {
 			icon = 0,
@@ -225,9 +238,9 @@ Config.zones = {
 	-- 	},
 	-- 	taskLimit = Config.getTaskLimit(),
 	-- 	tasks = {
-	-- 		{ id = 'activity_1', model = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
-	-- 		{ id = 'activity_2', model = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
-	-- 		{ id = 'activity_3', model = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil }
+	-- 		{ id = 'activity_1', model = nil, tool = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
+	-- 		{ id = 'activity_2', model = nil, tool = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
+	-- 		{ id = 'activity_3', model = nil, tool = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil }
 	-- 	},
 	-- 	blip = {
 	-- 		icon = 0,
@@ -247,9 +260,9 @@ Config.zones = {
 	-- 	coords = vector3(1285.75, -1765.23, 51.78),
 	-- 	taskLimit = Config.getTaskLimit(),
 	-- 	tasks = {
-	-- 		{ id = 'activity_1', model = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
-	-- 		{ id = 'activity_2', model = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
-	-- 		{ id = 'activity_3', model = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil }
+	-- 		{ id = 'activity_1', model = nil, tool = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
+	-- 		{ id = 'activity_2', model = nil, tool = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
+	-- 		{ id = 'activity_3', model = nil, tool = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil }
 	-- 	},
 	-- 	blip = {
 	-- 		icon = 0,
@@ -282,9 +295,9 @@ Config.zones = {
 	-- 	},
 	-- 	taskLimit = Config.getTaskLimit(),
 	-- 	tasks = {
-	-- 		{ id = 'activity_1', model = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
-	-- 		{ id = 'activity_2', model = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
-	-- 		{ id = 'activity_3', model = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil }
+	-- 		{ id = 'activity_1', model = nil, tool = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
+	-- 		{ id = 'activity_2', model = nil, tool = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
+	-- 		{ id = 'activity_3', model = nil, tool = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil }
 	-- 	},
 	-- 	blip = {
 	-- 		icon = 0,
@@ -308,9 +321,9 @@ Config.zones = {
 	-- 	},
 	-- 	taskLimit = Config.getTaskLimit(),
 	-- 	tasks = {
-	-- 		{ id = 'activity_1', model = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
-	-- 		{ id = 'activity_2', model = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
-	-- 		{ id = 'activity_3', model = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil }
+	-- 		{ id = 'activity_1', model = nil, tool = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
+	-- 		{ id = 'activity_2', model = nil, tool = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
+	-- 		{ id = 'activity_3', model = nil, tool = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil }
 	-- 	},
 	-- 	blip = {
 	-- 		icon = 0,
@@ -330,9 +343,9 @@ Config.zones = {
 	-- 	coords = vector3(-2008.5, 547.96, 110.65),
 	-- 	taskLimit = Config.getTaskLimit(),
 	-- 	tasks = {
-	-- 		{ id = 'activity_1', model = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
-	-- 		{ id = 'activity_2', model = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
-	-- 		{ id = 'activity_3', model = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil }
+	-- 		{ id = 'activity_1', model = nil, tool = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
+	-- 		{ id = 'activity_2', model = nil, tool = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
+	-- 		{ id = 'activity_3', model = nil, tool = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil }
 	-- 	},
 	-- },
 	-- {
@@ -361,9 +374,9 @@ Config.zones = {
 	-- 	},
 	-- 	taskLimit = Config.getTaskLimit(),
 	-- 	tasks = {
-	-- 		{ id = 'activity_1', model = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
-	-- 		{ id = 'activity_2', model = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
-	-- 		{ id = 'activity_3', model = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil }
+	-- 		{ id = 'activity_1', model = nil, tool = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
+	-- 		{ id = 'activity_2', model = nil, tool = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
+	-- 		{ id = 'activity_3', model = nil, tool = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil }
 	-- 	},
 	-- 	blip = {
 	-- 		icon = 0,
@@ -387,9 +400,9 @@ Config.zones = {
 	-- 	},
 	-- 	taskLimit = Config.getTaskLimit(),
 	-- 	tasks = {
-	-- 		{ id = 'activity_1', model = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
-	-- 		{ id = 'activity_2', model = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
-	-- 		{ id = 'activity_3', model = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil }
+	-- 		{ id = 'activity_1', model = nil, tool = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
+	-- 		{ id = 'activity_2', model = nil, tool = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
+	-- 		{ id = 'activity_3', model = nil, tool = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil }
 	-- 	},
 	-- 	blip = {
 	-- 		icon = 0,
@@ -419,9 +432,9 @@ Config.zones = {
 	-- 	},
 	-- 	taskLimit = Config.getTaskLimit(),
 	-- 	tasks = {
-	-- 		{ id = 'activity_1', model = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
-	-- 		{ id = 'activity_2', model = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
-	-- 		{ id = 'activity_3', model = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil }
+	-- 		{ id = 'activity_1', model = nil, tool = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
+	-- 		{ id = 'activity_2', model = nil, tool = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
+	-- 		{ id = 'activity_3', model = nil, tool = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil }
 	-- 	},
 	-- 	blip = {
 	-- 		icon = 0,

@@ -67,7 +67,7 @@ Call this to give a player an inventory item
 - :giveInventoryItem(:playerServerId, :name, :quantity)
 
 Call this to remove a players inventory item
-- :giveInventoryItem(:playerServerId, :name, :quantity)
+- :removeInventoryItem(:playerServerId, :name, :quantity)
 
 Call this to notify the player of something
 - :notifyPlayer(:playerServerId, :message)

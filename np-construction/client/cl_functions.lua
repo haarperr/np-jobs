@@ -51,6 +51,7 @@ function removePlayerTool()
 	DeleteObject(tool)
 end
 
+-- Used to create PolyZones of all types
 function createZone(zone)
 	local area = nil
 
@@ -83,6 +84,7 @@ function createZone(zone)
 	return area
 end
 
+-- Called when a task is started and an animation is needed
 function startTaskAnimation(zone, ped, task, requiredHits, source)
 	local hitsDone = 0
 	local hitsRequired = requiredHits
@@ -115,7 +117,6 @@ function startTaskAnimation(zone, ped, task, requiredHits, source)
 			if hitsDone >= requiredHits then
 				removePlayerTool()
 				Citizen.Wait(250)
-				-- pickupRock() -- Called to hold rock in hand with animation until player puts the item in the truck/car?
 				TriggerServerEvent("np-construction:completedTask", zone, task, source)
 				break
 			end  

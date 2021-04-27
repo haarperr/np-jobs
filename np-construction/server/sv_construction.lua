@@ -25,11 +25,11 @@ AddEventHandler("np-construction:assignZone", function()
 
 	-- Let me check if player hit zone limit during this run?
 	if playersZonesCompleted[source] ~= nil and #playersZonesCompleted[source] >= Config.zoneLimit then
-		TriggerEvent("np-construction:completeRun", source)
+		TriggerEvent("np-construction:completeJob", source)
 		return print('You have completed max amount of zones this run')	 -- Notify User with UI
 	end
 
-	-- Loop through our zones and remove the ones theyve done
+	-- Loop through our zones and remove the ones they have done
 	if playersZonesCompleted[source] ~= nil then
 		for index, zone in pairs(zoneList) do
 			for _, playerZoneDone in pairs (playersZonesCompleted[source]) do
@@ -41,9 +41,9 @@ AddEventHandler("np-construction:assignZone", function()
 		end
 	end
 
-	-- Check if their is any zones the player can do (edge case)
+	-- Check if their are any zones the player can do (edge case)
 	if #zoneList == 0 then
-		TriggerEvent("np-construction:completeRun")
+		TriggerEvent("np-construction:completeJob")
 		return print('You have no more zones you can work at this time.') -- Notify User with UI
 	end
 
@@ -63,30 +63,29 @@ AddEventHandler("np-construction:attemptTask", function(assignedZone, attemptedT
 
 			if task.id == attemptedTask.id then
 				if task.isUsed then
-					return print("Task has already been completed") -- Notify User with UI
+					TriggerClientEvent("np-construction:sendNotification", source, '~r~Task has already been completed.')
 				end
 
 				if task.isBeingUsed then
-					return print("Object is currently being used") -- Notify User with UI
+					TriggerClientEvent("np-construction:sendNotification", source, '~r~Object is currently being used.')
 				end
 
 				if zone.id == assignedZone.id then
-					-- If the user doesnt exist in table create one with default number of mines set to 0
+					-- If the user doesnt exist in table create one with default number of tasks set to 0
 					if playersTasksTotal[source] == nil then
-						print("im nil so should be logging")
+						-- print("im nil so should be logging")
 						playersTasksTotal[source] = { zone = assignedZone.id, amount = 0 }
 					end
 
 					if playersTasksTotal[source].zone == zone.id then
 						if playersTasksTotal[source].amount >= zone.taskLimit then
-							return print("You can no longer mine in this zone for now. " .. playersTasksTotal[source].zone)
+							TriggerClientEvent("np-construction:sendNotification", source, '~y~You have completed all required tasks for this zone.')
 						else
 							playersTasksTotal[source].amount = playersTasksTotal[source].amount + 1
-							print("Starting task " .. playersTasksTotal[source].amount)
+							TriggerClientEvent("np-construction:sendNotification", source, '~y~Stating Task: ' .. playersTasksTotal[source].amount)
 							task.isBeingUsed = true
 							task.beingUsedBy = source
 							TriggerClientEvent("np-construction:beginTask", source, zone, task, Config.requiredHits, source)
-							return
 						end
 					end
 				end
@@ -112,13 +111,15 @@ AddEventHandler("np-construction:completedTask", function(assignedZone, attempte
 							if (playersZonesCompleted[source] == nil) then
 								playersZonesCompleted[source] = {}
 							end
-
+							-- Add to count of total zones completed
 							table.insert(playersZonesCompleted[source], assignedZone.id)
-
-							print("Player is done in this zone move on. " .. playersZonesCompleted[source][1]) -- Notify User with UI
+							-- Notify Player that they are finished
+							TriggerClientEvent("np-construction:sendNotification", source, '~y~Player is done in this zone move on. ' .. playersZonesCompleted[source][1])
+							-- Clear Assigned Zone
 							TriggerClientEvent("np-construction:clearAssignedZone", source)
 						elseif playersTasksTotal[source].zone == zone.id and playersTasksTotal[source].amount < zone.taskLimit then
-							print('Task ' .. playersTasksTotal[source].amount .. '/' .. zone.taskLimit .. ' Completed')
+							-- Notify Player of Task Completion
+							TriggerClientEvent("np-construction:sendNotification", source, '~b~Task ' .. playersTasksTotal[source].amount .. '/' .. zone.taskLimit .. ' Completed')
 						end
 					end
 				end
@@ -128,30 +129,35 @@ AddEventHandler("np-construction:completedTask", function(assignedZone, attempte
 end)
 
 -- Called when the player completed their assigned amount of zones
-RegisterServerEvent("np-construction:completeRun")
-AddEventHandler("np-construction:completeRun", function(src)
+RegisterServerEvent("np-construction:completeJob")
+AddEventHandler("np-construction:completeJob", function(source)
 	local rewards = nil
 
-	playersTasksTotal[src] = nil -- Remove how many tasks they completed
-	playersZonesCompleted[src] = nil -- Remove them from zones completed so when they strart the job again after a "cooldown" its back to default
+	playersTasksTotal[source] = nil -- Remove how many tasks they completed
+	playersZonesCompleted[source] = nil -- Remove them from zones completed so when they strart the job again after a "cooldown" its back to default
 	
-	-- Get rewards based on config values
-	rewards = Config.getRewards()
+	rewards = Config.getRewards() -- Get rewards based on config values
 	if rewards.cash ~= nil then
-		-- TODO: replace with proper export to add cash to paystub at the foreman
-		exports["np-activities"]:addCashToPaySlip(playerServerId, rewards.cash)
+		if Config.useNoPixelExports then
+			TriggerClientEvent("np-construction:sendNotification", source, '~g~Paid: $' .. rewards.cash)
+			-- TODO: replace with proper export to add cash to paystub at the foreman
+			-- exports["np-activities"]:addCashToPaySlip(playerServerId, rewards.cash)
+		else
+			TriggerClientEvent("np-construction:sendNotification", source, '~g~Paid: $' .. rewards.cash)
+			-- print('Paid: $' .. rewards.cash) -- NOTE: Used for Debugging, comment out in production
+		end
 	end
 
 	for _, item in pairs(rewards.items) do
 		if Config.useNoPixelExports then
-			exports["np-activities"]:giveInventoryItem(playerServerId, item.id, item.amount)
+			TriggerClientEvent("np-construction:giveInventoryItem", source, item)
 		else
-			exports.functions:sendNotification('~y~Paid - ' .. item.amount .. item.id, playerServerId, Config.useNoPixelExports)
-			print('~y~Paid - ' .. item.amount .. item.id) -- NOTE: Used for Debugging, comment out in production
+			TriggerClientEvent("np-construction:sendNotification", source, '~g~Paid: ' .. item.amount .. item.id)
+			-- print('Paid: ' .. item.amount .. item.id) -- NOTE: Used for Debugging, comment out in production
 		end
 	end
 	
-	TriggerClientEvent("np-construction:stopConstruction", true) -- Now lets tell client theyre not assigned a job and reset their variables
+	TriggerClientEvent("np-construction:stopJob", source, true) -- Now lets tell client theyre not assigned a job and reset their variables
 end)
 
 -- NOTE: Debug event used to generate rock coords, comment out before using in production
