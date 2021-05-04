@@ -123,3 +123,20 @@ function startTaskAnimation(zone, ped, task, requiredHits, source)
 		end
 	end)
 end
+
+-- Create notification for the player
+function notifyPlayer(message)
+	local playerServerId = GetPlayerServerId(PlayerId())
+
+	if message ~= nil then
+		if Config.useNoPixelExports then
+			exports["np-activities"]:notifyPlayer(playerServerId, message)
+		else
+			SetNotificationTextEntry("STRING")
+			AddTextComponentString(message)
+			DrawNotification(true, false)
+		end
+	else
+		return print('nil message found! skipping notification...')
+	end
+end

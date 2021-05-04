@@ -5,12 +5,19 @@ end
 local playersTasksTotal = {}
 local playersZonesCompleted = {}
 
+-- Citizen.CreateThread(function()
+-- 	while true do
+-- 		Citizen.Wait(Config.taskResetTime * 1000)
+-- 		resetTaskZones()
+-- 	end
+-- end)
+
 AddEventHandler("playerDropped", function()
 	for _, zone in pairs(Config.zones) do
 		for _, task in pairs(zone.tasks) do
 			if task.beingUsedBy == source and not constructed then
 				task.isBeingUsed = false
-				-- task.isUsed = false
+				task.isUsed = false
 				task.beingUsedBy = nil
 				print('Player dropped & didn\'t finish tasks, reset it!')
 			end
@@ -43,8 +50,8 @@ AddEventHandler("np-construction:assignZone", function()
 
 	-- Check if their are any zones the player can do (edge case)
 	if #zoneList == 0 then
-		TriggerEvent("np-construction:completeJob")
-		return print('You have no more zones you can work at this time.') -- Notify User with UI
+		-- TriggerEvent("np-construction:completeJob")
+		return TriggerClientEvent("np-construction:sendNotification", source, '~r~You have no more zones you can work at this time.')
 	end
 
 	local randomZoneIndex = math.random(#zoneList)
@@ -64,10 +71,12 @@ AddEventHandler("np-construction:attemptTask", function(assignedZone, attemptedT
 			if task.id == attemptedTask.id then
 				if task.isUsed then
 					TriggerClientEvent("np-construction:sendNotification", source, '~r~Task has already been completed.')
+					return
 				end
 
 				if task.isBeingUsed then
 					TriggerClientEvent("np-construction:sendNotification", source, '~r~Object is currently being used.')
+					return
 				end
 
 				if zone.id == assignedZone.id then
@@ -116,6 +125,7 @@ AddEventHandler("np-construction:completedTask", function(assignedZone, attempte
 							-- Notify Player that they are finished
 							TriggerClientEvent("np-construction:sendNotification", source, '~y~Player is done in this zone move on. ' .. playersZonesCompleted[source][1])
 							-- Clear Assigned Zone
+							TriggerEvent("np-construction:resetZoneTasks")
 							TriggerClientEvent("np-construction:clearAssignedZone", source)
 						elseif playersTasksTotal[source].zone == zone.id and playersTasksTotal[source].amount < zone.taskLimit then
 							-- Notify Player of Task Completion
@@ -131,12 +141,25 @@ end)
 -- Called when the player completed their assigned amount of zones
 RegisterServerEvent("np-construction:completeJob")
 AddEventHandler("np-construction:completeJob", function(source)
-	local rewards = nil
-
 	playersTasksTotal[source] = nil -- Remove how many tasks they completed
 	playersZonesCompleted[source] = nil -- Remove them from zones completed so when they strart the job again after a "cooldown" its back to default
+	table.remove(playersZonesCompleted[source])
 	
-	rewards = Config.getRewards() -- Get rewards based on config values
+	TriggerEvent("np-construction:giveReward", source) -- NOTE: replace with "np-activity" export to pay players
+	TriggerClientEvent("np-construction:stopJob", source, true) -- Now lets tell client theyre not assigned a job and reset their variables
+end)
+
+-- Called when job is completed
+RegisterServerEvent("np-construction:resetZoneTasks")
+AddEventHandler("np-construction:resetZoneTasks", function()
+	resetZoneTasks()
+end)
+
+
+-- Called when the player needs to be rewarded for job completion
+RegisterServerEvent("np-construction:giveReward")
+AddEventHandler("np-construction:giveReward", function(source)
+	local rewards = Config.getRewards() -- Get rewards based on config values
 	if rewards.cash ~= nil then
 		if Config.useNoPixelExports then
 			TriggerClientEvent("np-construction:sendNotification", source, '~g~Paid: $' .. rewards.cash)
@@ -156,24 +179,17 @@ AddEventHandler("np-construction:completeJob", function(source)
 			-- print('Paid: ' .. item.amount .. item.id) -- NOTE: Used for Debugging, comment out in production
 		end
 	end
-	
-	TriggerClientEvent("np-construction:stopJob", source, true) -- Now lets tell client theyre not assigned a job and reset their variables
 end)
 
 -- NOTE: Debug event used to generate rock coords, comment out before using in production
--- RegisterServerEvent("np-construction:genCoords")
--- AddEventHandler("np-construction:genCoords", function(coords)
--- 	print(coords)
--- 	file = io.open("construction-coords.txt", "a")
--- 	if file then
--- 		file:write(coords)
--- 		file:write("\n")
--- 	end
--- 	file:close()
--- end)
--- NOTE END
-
-RegisterServerEvent("np-construction:resetTask")
-AddEventHandler("np-construction:resetTask", function()
-	resetZoneTasks()
+RegisterServerEvent("np-construction:genCoords")
+AddEventHandler("np-construction:genCoords", function(coords)
+	print(coords)
+	file = io.open("construction-coords.txt", "a")
+	if file then
+		file:write(coords)
+		file:write("\n")
+	end
+	file:close()
 end)
+-- NOTE END

@@ -3,7 +3,7 @@ local assignedZone = nil
 local isInZone = false
 local jobStatus = 'Waiting for a job assignment...'
 local isCurrentlyWorking = false
-local jobBlip = 0
+local jobBlip = nil
 
 -- NOTE: For debug only
 -- Citizen.CreateThread(function()
@@ -50,11 +50,7 @@ AddEventHandler("np-construction:attemptTask", function(zone)
 			end
 		end
 	else
-		if Config.useNoPixelExports then
-			exports["np-activities"]:notifyPlayer(playerServerId, '~r~You don\'t have the item to do this task.')
-		else
-			exports["functions"]:sendNotification('~r~You don\'t have the item to do this task.', playerServerId)
-		end
+		notifyPlayer('~r~You don\'t have the item to do this task.') -- Notify Player
 	end
 end)
 
@@ -62,7 +58,8 @@ end)
 RegisterNetEvent("np-construction:assignedZone")
 AddEventHandler("np-construction:assignedZone", function(zone)
 	local playerServerId = GetPlayerServerId(PlayerId())
-	
+	local timeToComplete = Config.getTimeToComplete()
+
 	-- Create the polyzone
 	zone.area = createZone(zone)
 	if zone.area ~= nil then
@@ -70,41 +67,54 @@ AddEventHandler("np-construction:assignedZone", function(zone)
 		assignedZone = zone
 		jobStatus = "Assigned to zone - " .. assignedZone.name
 
-		if Config.useNopixelExports then
-			exports["np-activities"]:activityInProgress(activityName, playerServerId, Config.timeToComplete)
+		if Config.useNoPixelExports then
+			exports["np-activities"]:activityInProgress(activityName, playerServerId, timeToComplete)
 		else
-			exports["functions"]:sendNotification('~b~Assigned to: ' .. assignedZone.name, playerServerId, Config.useNoPixelExports)
+			notifyPlayer(jobStatus) -- Notify Player
 		end
 	end
-	-- clear any existing job blips
-	if (jobBlip ~= 0) then
-		removeActivityDestination(zone)
-	end
+	
+	if jobBlip ~= nil then
+		-- clear any existing job blips
+		if Config.useNoPixelExports then
+			exports["np-activities"]:removeActivityDestination(jobBlip)
+		else
+			removeBlip()
+		end
+	end 
+
 	-- Finish by creating zone destination blips
-	if (jobBlip ~= 0) then
-		if Config.useNopixelExports then
-			exports["np-activities"]:setActivityDestination(zone)
-		else
-			setActivityDestination(zone)
-		end
+	if Config.useNoPixelExports then
+		exports["np-activities"]:setActivityDestination(jobBlip)
+	else
+		setBlip(assignedZone)
 	end
 end)
 
 -- Called when the player completes first assigned zone
 RegisterNetEvent("np-construction:clearAssignedZone")
-AddEventHandler("np-construction:clearAssignedZone", function(zone)
+AddEventHandler("np-construction:clearAssignedZone", function()
 	local playerServerId = GetPlayerServerId(PlayerId())
 	local wait = Config.getZoneAssignmentDelay() -- (integer) wait random amount of time based on config settings before assigning next zone
 
 	Citizen.CreateThread(function()
 		jobStatus = 'Waiting for a job assignment...'
 		assignedZone.area:destroy()
+		removeZoneObjects() -- clear task objects from the zone
 		assignedZone = nil
 		isInZone = false
+		-- clear any existing job blips
+		if (jobBlip ~= nil) then
+			if Config.useNoPixelExports then
+				exports["np-activities"]:removeActivityDestination(jobBlip)
+			else
+				removeBlip()
+			end
+		end
 		-- get next zone
 		Citizen.Wait(wait)
 		TriggerServerEvent("np-construction:assignZone")
-		-- exports["functions"]:sendNotification('~g~New Zone Assigned', playerServerId, Config.useNoPixelExports)
+		-- notifyPlayer('~g~New Zone Assigned') -- Notify Player
 	end)
 end)
 
@@ -114,13 +124,11 @@ AddEventHandler("np-construction:beginTask", function(zone, task, requiredHits, 
 	local playerServerId = GetPlayerServerId(PlayerId())
 	isCurrentlyWorking = true
 
-	-- print('^6BEGIN: ' .. task.id)
 	if Config.useNoPixelExports then
 		exports["np-activities"]:taskInProgress(activityName, playerServerId, task.id, task.name)
 	else
-		exports["functions"]:sendNotification('~b~Started Task: '..task.name, playerServerId, Config.useNoPixelExports)
+		notifyPlayer('~b~Started Task: '..task.name) -- Notify Player
 	end
-
 	-- TODO: Check task and get proper animation based on object model being interacted with???
 	startTaskAnimation(zone, GetPlayerPed(-1), task, requiredHits, source)
 end)
@@ -134,7 +142,7 @@ AddEventHandler("np-construction:completeTask", function(zone, task)
 	if Config.useNoPixelExports then
 		exports["np-activities"]:taskCompleted(activityName, playerServerId, 'Completed Task: ' .. task.id, true, 'Construction Complete!')
 	else
-		exports["functions"]:sendNotification('~p~Completed Task: ' .. task.id, playerServerId, Config.useNoPixelExports)
+		notifyPlayer('~p~Completed Task: ' .. task.id) -- Notify Player
 	end
 end)
 
@@ -145,32 +153,33 @@ AddEventHandler("np-construction:stopJob", function(successful)
 	
 	if assignedZone ~= nil then
 		assignedZone.area:destroy() -- Lets delete poly zone now
+		removeZoneObjects() -- clear task objects from the zone
 	end
-
 	assignedZone = nil
 	jobStatus = "No Job Assigned"
 	isInZone = false
 	isCurrentlyWorking = false
 	-- was the job was completed or cancelled?
 	if successful then
-		if Config.useNopixelExports then
+		if Config.useNoPixelExports then
 			exports["np-activities"]:activityCompleted(activityName, playerServerId, successful, 'Player completed the job!')
 		else
-			exports["functions"]:sendNotification('~p~Job Completed!', playerServerId, Config.useNoPixelExports)
+			notifyPlayer('~p~Job Completed!') -- Notify Player
 		end
 	else
-		if Config.useNopixelExports then
+		if Config.useNoPixelExports then
 			exports["np-activities"]:activityCompleted(activityName, playerServerId, successful, 'Player cancelled the job!')
 		else
-			exports["functions"]:sendNotification('~r~Job Cancelled!', playerServerId, Config.useNoPixelExports)
+			notifyPlayer('~r~Job Cancelled!') -- Notify Player
 		end
+		
 	end
 	-- Finish by removing any existing destination blips
-	if (jobBlip ~= 0) then
-		if Config.useNopixelExports then
-			exports["np-activities"]:removeActivityDestination(jobBlip)
+	if (jobBlip ~= nil) then
+		if Config.useNoPixelExports then
+			exports["np-activities"]:removeBlip(jobBlip)
 		else
-			removeActivityDestination(jobBlip)
+			removeBlip()
 		end
 	end
 end)
@@ -178,12 +187,7 @@ end)
 -- Called when the server needs to issue a client side notification
 RegisterNetEvent("np-construction:sendNotification")
 AddEventHandler("np-construction:sendNotification", function(message)
-	local playerServerId = GetPlayerServerId(PlayerId())
-	if Config.useNoPixelExports then
-		exports["np-activities"]:notifyPlayer(playerServerId, message)
-	else
-		exports["functions"]:sendNotification(message, playerServerId, Config.useNoPixelExports)
-	end
+	notifyPlayer(message) -- Notify Player
 end)
 
 -- Called when the server needs to issue a client side notification
@@ -199,15 +203,15 @@ AddEventHandler("np-construction:giveInventoryItem", function(item)
 end)
 
 -- Update a player's job blips
-function setActivityDestination(zone)
+function setBlip(zone)
 	-- Start by removing any existing destination
-	if (jobBlip ~= 0) then
-		removeActivityDestination(zone)
+	if (jobBlip ~= nil) then
+		removeBlip()
 	end
 
 	if (zone ~= nil) then
 		-- Add a blip and store its ID
-		jobBlip = createBlipWithText(zone.blip.coords, 469, 7, 65, false, zone.id, zone.name)
+		createBlipWithText(zone.blip.coords, zone.blip.icon, zone.blip.color, zone.blip.alpha, false, zone.id, zone.name)
 	end
 
 	-- Add a minimap route
@@ -215,13 +219,30 @@ function setActivityDestination(zone)
 	SetBlipRouteColour(jobBlip, 7)
 end
 
--- This script only activates a single destination blip at once || NOTE: zone is not needed, but it should be defined in the export
-function removeActivityDestination(zone)
-	if (jobBlip ~= 0) then
-		RemoveBlip(jobBlip)
-		jobBlip = 0
-	end
+-- Create a Blip on the map with text
+function createBlipWithText(blipPosVector, blipSprite, blipColor, blipAlpha, isShortRange, blipTextName, blipTextDescription)
+	jobBlip = AddBlipForCoord(blipPosVector.x, blipPosVector.y, blipPosVector.z)
 
+	SetBlipSprite(jobBlip, blipSprite)
+	SetBlipColour(jobBlip, blipColor)
+	SetBlipAlpha(jobBlip, blipAlpha)
+	SetBlipAsShortRange(jobBlip, isShortRange)
+
+	AddTextEntry(blipTextName, blipTextDescription)
+	BeginTextCommandSetBlipName(blipTextName)
+	EndTextCommandSetBlipName(jobBlip)
+end
+
+-- Remove player's job blip
+function removeBlip()
+	if DoesBlipExist(jobBlip) then
+		SetBlipAsMissionCreatorBlip(jobBlip, false)
+		RemoveBlip(jobBlip)
+		jobBlip = nil
+	else
+		print('No blip found!')
+	end
+	-- clear waypoints
 	ClearAllBlipRoutes()
 end
 
@@ -229,52 +250,55 @@ end
 function handlePlayerEnteringZone(isPointInside, point)
 	if assignedZone then
 		if isPointInside then
-			-- Notify Player
-			if Config.useNopixelExports then
-				exports["np-activities"]:notifyPlayer(playerServerId, '~b~Complete Tasks!')
-			else
-				exports["functions"]:sendNotification('~b~Complete Tasks!', playerServerId, Config.useNoPixelExports)
-			end
-
-			generateTaskObjs(assignedZone.tasks, assignedZone.prop)
 			isInZone = true
-			jobStatus = 'Complete tasks!'
+			jobStatus = '~b~Complete tasks!'
+			createZoneObjects()
+			notifyPlayer(jobStatus) -- Notify Player
 		else
-			-- Notify Player
-			if Config.useNopixelExports then
-				exports["np-activities"]:notifyPlayer(playerServerId, '~y~Return to your assigned zone!')
-			else
-				exports["functions"]:sendNotification('~y~Return to your assigned zone!', playerServerId, Config.useNoPixelExports)
-			end
-
-			removeTaskObjs(assignedZone.tasks)
 			isInZone = false
-			jobStatus = "Go to the job site - " .. assignedZone.name
+			jobStatus = '~y~Go to your assigned zone!' .. assignedZone.name
+			notifyPlayer(jobStatus) -- Notify Player
+			removeZoneObjects() -- clear task objects from the zone
+			notifyPlayer(jobStatus) -- Notify Player
 		end
 	end
 end
 
--- Called when player enters a job zone and needs to generate the task objects
-function generateTaskObjs(tasks, prop)
-	local newTasks = tasks
-
-	for i, task in pairs(newTasks) do
-		local unused, objectZ = GetGroundZFor_3dCoord(task.coords["x"], task.coords["y"], 99999.0, 1)
-		task.object = CreateObject(GetHashKey(prop), task.coords["x"], task.coords["y"], objectZ - 0.2, false, true, false)
-		FreezeEntityPosition(task.object, true)
-		-- Maybe you want to create a PolyZone here so that you can "peak" to start mining
+-- Called when player enters a job zone that needs to generate additional task objects
+function createZoneObjects()
+	if assignedZone then
+		if not assignedZone.objectsSpawned then
+			for i, obj in pairs(assignedZone.objects) do
+				local unused, objZ = GetGroundZFor_3dCoord(obj.coords["x"], obj.coords["y"], 99999.0, 1)
+				obj.object = CreateObject(GetHashKey(obj.prop), obj.coords["x"], obj.coords["y"], objZ - 0.2, false, true, false)
+				FreezeEntityPosition(obj.object, true)
+			end
+			assignedZone.objectsSpawned = true
+		else
+			print('Objects have already been spawned!')
+		end
+	else
+		print('No zone assigned!')
 	end
-
-	assignedZone.tasks = newTasks
 end
-  
+
 -- Used to remove task objects when the player leaves the zone
-function removeTaskObjs(tasks)
-	for i, task in pairs(tasks) do
-		if task.object ~= nil then
-			DetachEntity(task.object, 1, true)
-			DeleteEntity(task.object)
-			DeleteObject(task.object)
+function removeZoneObjects()
+	if assignedZone then
+		if assignedZone.objectsSpawned then
+			for i, obj in pairs(assignedZone.objects) do
+				if obj.object ~= nil then
+					DetachEntity(obj.object, 1, true)
+					DeleteEntity(obj.object)
+					DeleteObject(obj.object)
+					obj.object = nil
+				end
+			end
+			assignedZone.objectsSpawned = false
+		else
+			print('No objects to remove!')
 		end
+	else
+		print('No zone assigned!')
 	end
 end

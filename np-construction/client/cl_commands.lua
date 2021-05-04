@@ -12,7 +12,7 @@ RegisterCommand("start_construction", function(source, args)
 	if canDoActivity then
 		TriggerServerEvent("np-construction:assignZone")
 	else
-		exports["functions"]:sendNotification('~r~You can\'t do this job at this time.', playerServerId, Config.useNoPixelExports)
+		notifyPlayer('~r~~You can\'t do this job at this time.' .. Config.requiredItem) -- Notify Player
 	end
 end, false)
 
@@ -28,8 +28,7 @@ RegisterCommand("stop_construction", function(source, args)
 	TriggerEvent("np-construction:stopJob", false)
 end, false)
   
-  
--- NOTE: This is here for testing to give player a tool if needed
+-- NOTE: There are here for testing to give player a tool if needed
 RegisterCommand("give_tool", function(source, args)
 local playerServerId = GetPlayerServerId(PlayerId())
 	if Config.useNoPixelExports then
@@ -42,14 +41,15 @@ local playerServerId = GetPlayerServerId(PlayerId())
 		end
 	else
 		if Config.requireMultipleItems then
-			exports["functions"]:sendNotification("~y~Gave: " .. json.encode(Config.requiredItems), playerServerId, Config.useNoPixelExports)
+			notifyPlayer('~y~Gave: ' .. json.encode(Config.requiredItems)) -- Notify Player
 		else
-			exports["functions"]:sendNotification("~y~Gave: " .. Config.requiredItem, playerServerId, Config.useNoPixelExports)
+			notifyPlayer('~y~Gave: ' .. Config.requiredItem) -- Notify Player
 		end
 	end
 end, false)
 
--- RegisterCommand("gen_point", function(source, args)
---   local playerPed = GetPlayerPed(-1)
---   TriggerServerEvent("np-construction:genPoint", GetEntityCoords(playerPed))
--- end, false)
+RegisterCommand("gen_coords", function(source, args)
+	local playerPed = GetPlayerPed(-1)
+	TriggerServerEvent("np-construction:genCoords", GetEntityCoords(playerPed))
+end, false)
+-- NOTE: end note

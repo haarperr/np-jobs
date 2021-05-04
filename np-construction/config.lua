@@ -6,7 +6,7 @@ Config.jobName = 'Construction Worker'
 Config.initMessage = 'Construction Loaded' -- (string) text to print
 
 -- Enable NoPixel Exports
-Config.useNoPixelExports = true
+Config.useNoPixelExports = false
 
 -- Set required items for player to complete job tasks
 Config.requireMultipleItems = false -- (boolean) does this job require multiple items?
@@ -35,10 +35,10 @@ Config.zoneLimit = 2 -- (integer) Number of zones to complete before the "task" 
 Config.useRandTaskLimit = true -- (boolean) Use a ranom task limit at each job site?
 Config.minTaskLimit = 2 -- (integer) Minimum number of tasks required to complete a zone || NOTE: if useRandTaskLimit = false, this value becomes the default taskLimit for each zone
 Config.maxTaskLimit = 5 -- (integer) Maximum number of tasks required to complete a zone
-Config.useRandRewards = true -- (boolean) Use a ranom payments?
 Config.useRandZoneAssignmentDelay = false -- (boolean) Use a ranom zone assignment delay?
 Config.minZoneAssignmentDelay = 5000 -- (integer) Minimum amount of time in ms to delay before assigning the next zone during a job
 Config.maxZoneAssignmentDelay = 15000 -- (integer) Maximum amount of time in ms to delay before assigning the next zone during a job
+Config.useRandRewards = true -- (boolean) Use a ranom payments?
 Config.rewards = { -- Job completion payment settings
 	cash = {
 		min = 100, -- (integer) min amount of cash the job can pay out to each player
@@ -65,9 +65,9 @@ end
 -- Custom Function to generate timeToComplete for each zone
 Config.getTimeToComplete = function()
 	if Config.useRandTimeToComplete then
-		Config.timeToComplete = math.random(Config.minTimeToComplete, Config.maxTimeToComplete) -- (integer) set random timeToComplete between Config.minTimeToComplete & Config.maxTimeToComplete
+		return math.random(Config.minTimeToComplete, Config.maxTimeToComplete) -- (integer) set random timeToComplete between Config.minTimeToComplete & Config.maxTimeToComplete
 	else
-		Config.timeToComplete = Config.minTimeToComplete -- (integer) default to minimum time to complete value
+		return Config.minTimeToComplete -- (integer) default to minimum time to complete value
 	end
 end
 
@@ -133,39 +133,84 @@ Config.zones = {
 			{ id = 'fix_generator_2', name = 'Fix Generator 2', model = -57215983, tool = 'prop_tool_pliers', coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
 			{ id = 'collect_lumber', name = 'Collect Lumber', model = 1367246936, tool = 'prop_tool_consaw', coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
 			{ id = 'fix_caution_fence', name = 'Fix Caution Fence', model = 710800597, tool = 'prop_tool_hammer', coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
-			{ id = 'fix_caution_fence_2', name = 'Fix Caution Fence', model = 1469496946, tool = 'prop_tool_hammer', coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil }
+			{ id = 'fix_caution_fence_2', name = 'Fix Caution Fence', model = 1469496946, tool = 'prop_tool_hammer', coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
+			{ id = 'check_blueprints', name = 'Check Blueprints', model = 904554844, tool = 'prop_tool_hammer', coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil }
 			-- TODO: add support for polyzone based tasks for digging, hammering, sawing & cutting, etc.
 		},
-		blip = {
-			icon = 0,
-			coords = vector3(0.0, 0.0, 0.0),
-		},
-	},
-	{
-		id = 'paleto_house',
-		name = 'Paleto House',
-		active = true,
-		type = 'box',
-		heading = 45,
-		length = 36.2,
-		width = 45.6,
-		minZ = 29.05,
-		maxZ = 42.25,
-		coords = vector3(-327.41, 6303.54, 35.65),
-		taskLimit = Config.getTaskLimit(),
-		tasks = {
-			{ id = 'mix_cement', name = 'Mix Cement', model = -500221685, tool = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
-			{ id = 'mix_cement_2', name = 'Mix Cement', model = -2113539824, tool = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
-			{ id = 'open_cement_bags', name = 'Open Cement Bags', model = 1899123601, tool = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
-			{ id = 'clean_potty', name = 'Clean Port-a-Potty', model = 682074297, tool = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
-			{ id = 'collect_lumber', name = 'Collect Lumber', model = 1861370687, tool = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
-			{ id = 'check_trash', name = 'Check Trash', model = -515278816, tool = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil }
+		objectsSpawned = false,
+		objects = {
+			{ prop = 'prop_tool_bench02', object = nil, model = 904554844, coords = vector3(98.11519, 6549.871, 31.67644) }, -- check_blueprints
+			{ prop = 'prop_cementbags01', object = nil, model = 1899123601, coords = vector3(92.31735, 6544.2, 31.67644) }, -- open_cement_bags
+			{ prop = 'prop_cons_cements01', object = nil, model = 1962326206, coords = vector3(81.55157, 6543.569, 31.67645) }, -- open_cement_bags_2
+			{ prop = 'prop_cementmixer_01a', object = nil, model = -2113539824, coords = vector3(75.4737, 6537.761, 31.67645) }, -- mix_cement
+			{ prop = 'prop_cementmixer_02a', object = nil, model = -500221685, coords = vector3(98.84708, 6536.671, 31.66304) }, -- mix_cement_2
+			{ prop = 'prop_cablespool_01a', object = nil, model = -423137698, coords = vector3(108.1223, 6538.994, 31.66305) }, -- destroy_wood_spool_a
+			{ prop = 'prop_cablespool_01b', object = nil, model = -903793390, coords = vector3(88.66129, 6495.451, 31.3701) }, -- destroy_wood_spool_b
+			{ prop = 'prop_cablespool_02', object = nil, model = -1485906437, coords = vector3(99.2834, 6508.607, 31.37016) }, -- cut_tubing
+			{ prop = 'prop_cablespool_03', object = nil, model = -1255376522, coords = vector3(70.29006, 6487.601, 31.37542) }, -- destroy_wood_spool_3
+			{ prop = 'prop_cablespool_04', object = nil, model = 2111998691, coords = vector3(62.51626, 6488.584, 31.4565) }, -- destroy_wood_spool_4
+			{ prop = 'prop_cablespool_05', object = nil, model = -1951881617, coords = vector3(61.01862, 6498.011, 31.55049) }, -- cut_cable
+			{ prop = 'prop_cablespool_06', object = nil, model = -497495090, coords = vector3(45.7235, 6562.972, 31.43453) }, -- cut_cable_2
+			{ prop = 'prop_conc_blocks01a', object = nil, model = -1951226014, coords = vector3(75.29274, 6590.26, 31.45163) }, -- prepare_cinder_blocks
+			{ prop = 'prop_paints_bench01', object = nil, model = 2126419969, coords = vector3(82.51329, 6584.312, 31.44679) }, -- mix_paint
+			{ prop = 'prop_generator_04', object = nil, model = -1001828301, coords = vector3(70.88823, 6571.704, 28.45139) }, -- fix_generator_3
+			{ prop = 'prop_portaloo_01a', object = nil, model = 682074297, coords = vector3(113.096, 6519.136, 31.40958) }, -- clean_potty
+			{ prop = 'prop_pallet_02a', object = nil, model = 830159341, coords = vector3(121.6373, 6529.694, 31.37017) } -- destroy_pallate
 		},
 		blip = {
-			icon = 0,
-			coords = vector3(0.0, 0.0, 0.0),
+			icon = 446,
+			color = 47,
+			alpha = 100,
+			coords = vector3(74.22813, 6552.917, 31.4397),
 		},
 	},
+	-- {
+	-- 	id = 'paleto_house',
+	-- 	name = 'Paleto House',
+	-- 	active = true,
+	-- 	type = 'box',
+	-- 	heading = 45,
+	-- 	length = 36.2,
+	-- 	width = 45.6,
+	-- 	minZ = 29.05,
+	-- 	maxZ = 42.25,
+	-- 	coords = vector3(-327.41, 6303.54, 35.65),
+	-- 	taskLimit = Config.getTaskLimit(),
+	-- 	tasks = {
+	-- 		{ id = 'mix_cement_2', name = 'Mix Cement', model = -500221685, tool = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
+	-- 		{ id = 'mix_cement', name = 'Mix Cement', model = -2113539824, tool = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
+	-- 		{ id = 'open_cement_bags', name = 'Open Cement Bags', model = 1899123601, tool = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
+	-- 		{ id = 'clean_potty', name = 'Clean Port-a-Potty', model = 682074297, tool = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
+	-- 		{ id = 'collect_lumber', name = 'Collect Lumber', model = 1861370687, tool = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
+	-- 		{ id = 'check_trash', name = 'Check Trash', model = -515278816, tool = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil }
+	-- 	},
+	-- 	objectsSpawned = false,
+	-- 	objects = {
+	-- 		{ prop = 'prop_tool_bench02', object = nil, model = 904554844, coords = vector3(0.0, 0.0, 0.0) }, -- check_blueprints
+	-- 		{ prop = 'prop_cementbags01', object = nil, model = 1899123601, coords = vector3(0.0, 0.0, 0.0) }, -- open_cement_bags
+	-- 		{ prop = 'prop_cons_cements01', object = nil, model = 1962326206, coords = vector3(0.0, 0.0, 0.0) }, -- open_cement_bags_2
+	-- 		{ prop = 'prop_cementmixer_01a', object = nil, model = -2113539824, coords = vector3(0.0, 0.0, 0.0) }, -- mix_cement
+	-- 		{ prop = 'prop_cementmixer_02a', object = nil, model = -500221685, coords = vector3(0.0, 0.0, 0.0) }, -- mix_cement_2
+	-- 		{ prop = 'prop_cablespool_01a', object = nil, model = -423137698, coords = vector3(0.0, 0.0, 0.0) }, -- destroy_wood_spool_a
+	-- 		{ prop = 'prop_cablespool_01b', object = nil, model = -903793390, coords = vector3(0.0, 0.0, 0.0) }, -- destroy_wood_spool_b
+	-- 		{ prop = 'prop_cablespool_02', object = nil, model = -1485906437, coords = vector3(0.0, 0.0, 0.0) }, -- cut_tubing
+	-- 		{ prop = 'prop_cablespool_03', object = nil, model = -1255376522, coords = vector3(0.0, 0.0, 0.0) }, -- destroy_wood_spool_3
+	-- 		{ prop = 'prop_cablespool_04', object = nil, model = 2111998691, coords = vector3(0.0, 0.0, 0.0) }, -- destroy_wood_spool_4
+	-- 		{ prop = 'prop_cablespool_05', object = nil, model = -1951881617, coords = vector3(0.0, 0.0, 0.0) }, -- cut_cable
+	-- 		{ prop = 'prop_cablespool_06', object = nil, model = -497495090, coords = vector3(0.0, 0.0, 0.0) }, -- cut_cable_2
+	-- 		{ prop = 'prop_conc_blocks01a', object = nil, model = -1951226014, coords = vector3(0.0, 0.0, 0.0) }, -- prepare_cinder_blocks
+	-- 		{ prop = 'prop_paints_bench01', object = nil, model = 2126419969, coords = vector3(0.0, 0.0, 0.0) }, -- mix_paint
+	-- 		{ prop = 'prop_generator_04', object = nil, model = -1001828301, coords = vector3(0.0, 0.0, 0.0) }, -- fix_generator_3
+	-- 		{ prop = 'prop_portaloo_01a', object = nil, model = 682074297, coords = vector3(0.0, 0.0, 0.0) }, -- clean_potty
+	-- 		{ prop = 'prop_pallet_02a', object = nil, model = 830159341, coords = vector3(0.0, 0.0, 0.0) } -- destroy_pallate
+	-- 	},
+	-- 	blip = {
+	-- 		icon = 446,
+	-- 		color = 47,
+	-- 		alpha = 90,
+	-- 		coords = vector3(-319.2657, 6317.954, 31.7847),
+	-- 	},
+	-- },
 	{
 		id = 'paleto_house_2',
 		name = 'Paleto House 2',
@@ -179,43 +224,90 @@ Config.zones = {
 		coords = vector3(-382.82, 6257.79, 30.08),
 		taskLimit = Config.getTaskLimit(),
 		tasks = {
+			{ id = 'open_cement_bags', name = 'Open Cement Bags', model = 1899123601, tool = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
 			{ id = 'mix_cement_2', name = 'Mix Cement', model = -2113539824, tool = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
 			{ id = 'prepare_cinder_blocks', name = 'Prepare Cinder Blocks', model = -1951226014, tool = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
 			{ id = 'destroy_pallate', name = 'Destroy Pallate', model = 830159341, tool = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
 			{ id = 'cut_wood', name = 'Cut Wood (2x4)', model = 31071109, tool = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
-			{ id = 'repair_brick_wall', name = 'Repair Brick Wall', model = -1744550758, tool = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil }
+			{ id = 'repair_brick_wall', name = 'Repair Brick Wall', model = -1744550758, tool = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
+			{ id = 'check_blueprints', name = 'Check Blueprints', model = 904554844, tool = 'prop_tool_hammer', coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil }
+		},
+		objectsSpawned = false,
+		objects = {
+			{ prop = 'prop_tool_bench02', object = nil, model = 904554844, coords = vector3(-364.8458, 6249.079, 31.48724) }, -- check_blueprints
+			{ prop = 'prop_cementbags01', object = nil, model = 1899123601, coords = vector3(-372.2398, 6247.938, 31.48724) }, -- open_cement_bags
+			-- { prop = 'prop_cons_cements01', object = nil, model = 1962326206, coords = vector3(0.0, 0.0, 0.0) }, -- open_cement_bags_2
+			-- { prop = 'prop_cementmixer_01a', object = nil, model = -2113539824, coords = vector3(0.0, 0.0, 0.0) }, -- mix_cement
+			-- { prop = 'prop_cementmixer_02a', object = nil, model = -500221685, coords = vector3(0.0, 0.0, 0.0) }, -- mix_cement_2
+			-- { prop = 'prop_cablespool_01a', object = nil, model = -423137698, coords = vector3(0.0, 0.0, 0.0) }, -- destroy_wood_spool_a
+			-- { prop = 'prop_cablespool_01b', object = nil, model = -903793390, coords = vector3(0.0, 0.0, 0.0) }, -- destroy_wood_spool_b
+			-- { prop = 'prop_cablespool_02', object = nil, model = -1485906437, coords = vector3(0.0, 0.0, 0.0) }, -- cut_tubing
+			-- { prop = 'prop_cablespool_03', object = nil, model = -1255376522, coords = vector3(0.0, 0.0, 0.0) }, -- destroy_wood_spool_3
+			-- { prop = 'prop_cablespool_04', object = nil, model = 2111998691, coords = vector3(0.0, 0.0, 0.0) }, -- destroy_wood_spool_4
+			-- { prop = 'prop_cablespool_05', object = nil, model = -1951881617, coords = vector3(0.0, 0.0, 0.0) }, -- cut_cable
+			-- { prop = 'prop_cablespool_06', object = nil, model = -497495090, coords = vector3(0.0, 0.0, 0.0) }, -- cut_cable_2
+			-- { prop = 'prop_conc_blocks01a', object = nil, model = -1951226014, coords = vector3(0.0, 0.0, 0.0) }, -- prepare_cinder_blocks
+			-- { prop = 'prop_paints_bench01', object = nil, model = 2126419969, coords = vector3(0.0, 0.0, 0.0) }, -- mix_paint
+			-- { prop = 'prop_generator_04', object = nil, model = -1001828301, coords = vector3(0.0, 0.0, 0.0) }, -- fix_generator_3
+			-- { prop = 'prop_portaloo_01a', object = nil, model = 682074297, coords = vector3(0.0, 0.0, 0.0) }, -- clean_potty
+			-- { prop = 'prop_pallet_02a', object = nil, model = 830159341, coords = vector3(0.0, 0.0, 0.0) } -- destroy_pallate
 		},
 		blip = {
-			icon = 0,
-			coords = vector3(0.0, 0.0, 0.0),
+			icon = 446,
+			color = 47,
+			alpha = 100,
+			coords = vector3(-381.6368, 6265.179, 31.05582),
 		},
 	},
-	{
-		id = 'paleto_clucking_bell',
-		name = 'Paleto Clucking Bell',
-		active = true,
-		type = 'box',
-		heading = 46,
-		length = 55.0,
-		width = 78.2,
-		minZ = 30.2,
-		maxZ = 43.4,
-		coords = vector3(133.83, 6442.29, 31.2),
-		taskLimit = Config.getTaskLimit(),
-		tasks = {
-			{ id = 'open_cement_bags', name = 'Open Cement Bags', model = 1899123601, tool = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
-			{ id = 'prepare_cinder_blocks', name = 'Prepare Cinder Blocks', model = -1951226014, tool = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
-			{ id = 'destroy_wood_spool', name = 'Destroy Wood Spool', model = 2111998691, tool = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
-			{ id = 'cut_iron_beams', name = 'Cut Iron Beams', model = 1723816705, tool = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
-			{ id = 'refuel_generator', name = 'Refuel Generator', model = -1775229459, tool = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
-			{ id = 'refuel_generator_2', name = 'Refuel Generator', model = -57215983, tool = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
-			{ id = 'clean_port_a_potty', name = 'Clean Port-a-Potty', model = 682074297, tool = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
-		},
-		blip = {
-			icon = 0,
-			coords = vector3(0.0, 0.0, 0.0),
-		},
-	},
+	-- {
+	-- 	id = 'paleto_clucking_bell',
+	-- 	name = 'Paleto Clucking Bell',
+	-- 	active = true,
+	-- 	type = 'box',
+	-- 	heading = 46,
+	-- 	length = 55.0,
+	-- 	width = 78.2,
+	-- 	minZ = 30.2,
+	-- 	maxZ = 43.4,
+	-- 	coords = vector3(133.83, 6442.29, 31.2),
+	-- 	taskLimit = Config.getTaskLimit(),
+	-- 	tasks = {
+	-- 		{ id = 'open_cement_bags', name = 'Open Cement Bags', model = 1899123601, tool = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
+	-- 		{ id = 'prepare_cinder_blocks', name = 'Prepare Cinder Blocks', model = -1951226014, tool = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
+	-- 		{ id = 'destroy_wood_spool', name = 'Destroy Wood Spool', model = 2111998691, tool = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
+	-- 		{ id = 'cut_iron_beams', name = 'Cut Iron Beams', model = 1723816705, tool = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
+	-- 		{ id = 'refuel_generator', name = 'Refuel Generator', model = -1775229459, tool = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
+	-- 		{ id = 'refuel_generator_2', name = 'Refuel Generator', model = -57215983, tool = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
+	-- 		{ id = 'clean_potty', name = 'Clean Port-a-Potty', model = 682074297, tool = nil, coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil },
+	-- 		{ id = 'check_blueprints', name = 'Check Blueprints', model = 904554844, tool = 'prop_tool_hammer', coords = vector3(0.0, 0.0, 0.0), isBeingUsed = false, isUsed = false, beingUsedBy = nil }
+	-- 	},
+	-- 	objectsSpawned = false,
+	-- 	objects = {
+	-- 		{ prop = 'prop_tool_bench02', object = nil, model = 904554844, coords = vector3(0.0, 0.0, 0.0) }, -- check_blueprints
+	-- 		{ prop = 'prop_cementbags01', object = nil, model = 1899123601, coords = vector3(0.0, 0.0, 0.0) }, -- open_cement_bags
+	-- 		{ prop = 'prop_cons_cements01', object = nil, model = 1962326206, coords = vector3(0.0, 0.0, 0.0) }, -- open_cement_bags_2
+	-- 		{ prop = 'prop_cementmixer_01a', object = nil, model = -2113539824, coords = vector3(0.0, 0.0, 0.0) }, -- mix_cement
+	-- 		{ prop = 'prop_cementmixer_02a', object = nil, model = -500221685, coords = vector3(0.0, 0.0, 0.0) }, -- mix_cement_2
+	-- 		{ prop = 'prop_cablespool_01a', object = nil, model = -423137698, coords = vector3(0.0, 0.0, 0.0) }, -- destroy_wood_spool_a
+	-- 		{ prop = 'prop_cablespool_01b', object = nil, model = -903793390, coords = vector3(0.0, 0.0, 0.0) }, -- destroy_wood_spool_b
+	-- 		{ prop = 'prop_cablespool_02', object = nil, model = -1485906437, coords = vector3(0.0, 0.0, 0.0) }, -- cut_tubing
+	-- 		{ prop = 'prop_cablespool_03', object = nil, model = -1255376522, coords = vector3(0.0, 0.0, 0.0) }, -- destroy_wood_spool_3
+	-- 		{ prop = 'prop_cablespool_04', object = nil, model = 2111998691, coords = vector3(0.0, 0.0, 0.0) }, -- destroy_wood_spool_4
+	-- 		{ prop = 'prop_cablespool_05', object = nil, model = -1951881617, coords = vector3(0.0, 0.0, 0.0) }, -- cut_cable
+	-- 		{ prop = 'prop_cablespool_06', object = nil, model = -497495090, coords = vector3(0.0, 0.0, 0.0) }, -- cut_cable_2
+	-- 		{ prop = 'prop_conc_blocks01a', object = nil, model = -1951226014, coords = vector3(0.0, 0.0, 0.0) }, -- prepare_cinder_blocks
+	-- 		{ prop = 'prop_paints_bench01', object = nil, model = 2126419969, coords = vector3(0.0, 0.0, 0.0) }, -- mix_paint
+	-- 		{ prop = 'prop_generator_04', object = nil, model = -1001828301, coords = vector3(0.0, 0.0, 0.0) }, -- fix_generator_3
+	-- 		{ prop = 'prop_portaloo_01a', object = nil, model = 682074297, coords = vector3(0.0, 0.0, 0.0) }, -- clean_potty
+	-- 		{ prop = 'prop_pallet_02a', object = nil, model = 830159341, coords = vector3(0.0, 0.0, 0.0) } -- destroy_pallate
+	-- 	},
+	-- 	blip = {
+	-- 		icon = 446,
+	-- 		color = 47,
+	-- 		alpha = 90,
+	-- 		coords = vector3(134.4951, 6418.958, 31.31242),
+	-- 	},
+	-- },
 	-- {
 	-- 	id = 'pdm_skyscraper',
 	-- 	name = 'PDM Skyscraper',
