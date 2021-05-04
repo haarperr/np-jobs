@@ -32,7 +32,7 @@ Config.maxTimeToComplete = 3600000-- (integer) Maximum number of milliseconds th
 Config.requiredHits = 3 -- (integer) Number of animation cycles required to complete the task
 Config.maxGroupSize = 4 -- (integer) Maximum players allowed in the job center group for this job
 Config.zoneLimit = 2 -- (integer) Number of zones to complete before the "task" is flagged as "completed"
-Config.useRandTaskLimit = true -- (boolean) Use a ranom task limit at each job site?
+Config.useRandTaskLimit = false -- (boolean) Use a ranom task limit at each job site?
 Config.minTaskLimit = 2 -- (integer) Minimum number of tasks required to complete a zone || NOTE: if useRandTaskLimit = false, this value becomes the default taskLimit for each zone
 Config.maxTaskLimit = 5 -- (integer) Maximum number of tasks required to complete a zone
 Config.useRandZoneAssignmentDelay = false -- (boolean) Use a ranom zone assignment delay?

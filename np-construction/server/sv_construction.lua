@@ -32,27 +32,29 @@ AddEventHandler("np-construction:assignZone", function()
 
 	-- Let me check if player hit zone limit during this run?
 	if playersZonesCompleted[source] ~= nil and #playersZonesCompleted[source] >= Config.zoneLimit then
+		playersTasksTotal[source] = nil -- Set to nil again once we move to another zone so then we can track that zones tasks
+		playersZonesCompleted[source] = nil -- Remove them from zones completed so when they strart the job again after a "cooldown" its back to default
 		TriggerEvent("np-construction:completeJob", source)
-		return print('You have completed max amount of zones this run')	 -- Notify User with UI
+		return -- log player job completion here?
 	end
 
 	-- Loop through our zones and remove the ones they have done
-	if playersZonesCompleted[source] ~= nil then
-		for index, zone in pairs(zoneList) do
-			for _, playerZoneDone in pairs (playersZonesCompleted[source]) do
-				if zone.id == playerZoneDone then
-					table.remove(zoneList, index)
-					print('Removing this zone because player has done it already')
-				end
-			end
-		end
-	end
+	-- if playersZonesCompleted[source] ~= nil then
+	-- 	for index, zone in pairs(zoneList) do
+	-- 		for _, playerZoneDone in pairs (playersZonesCompleted[source]) do
+	-- 			if zone.id == playerZoneDone then
+	-- 				table.remove(zoneList, index)
+	-- 				print('Removing this zone because player has done it already')
+	-- 			end
+	-- 		end
+	-- 	end
+	-- end
 
 	-- Check if their are any zones the player can do (edge case)
-	if #zoneList == 0 then
-		-- TriggerEvent("np-construction:completeJob")
-		return TriggerClientEvent("np-construction:sendNotification", source, '~r~You have no more zones you can work at this time.')
-	end
+	-- if #zoneList == 0 then
+	-- 	-- TriggerEvent("np-construction:completeJob")
+	-- 	return TriggerClientEvent("np-construction:sendNotification", source, '~r~You have no more zones you can work at this time.')
+	-- end
 
 	local randomZoneIndex = math.random(#zoneList)
 	local randomZone = zoneList[randomZoneIndex]
@@ -141,10 +143,9 @@ end)
 -- Called when the player completed their assigned amount of zones
 RegisterServerEvent("np-construction:completeJob")
 AddEventHandler("np-construction:completeJob", function(source)
-	playersTasksTotal[source] = nil -- Remove how many tasks they completed
-	playersZonesCompleted[source] = nil -- Remove them from zones completed so when they strart the job again after a "cooldown" its back to default
-	table.remove(playersZonesCompleted[source])
-	
+	-- playersTasksTotal[source] = nil -- Remove how many tasks they completed
+	-- playersZonesCompleted[source] = nil -- Remove them from zones completed so when they strart the job again after a "cooldown" its back to default
+
 	TriggerEvent("np-construction:giveReward", source) -- NOTE: replace with "np-activity" export to pay players
 	TriggerClientEvent("np-construction:stopJob", source, true) -- Now lets tell client theyre not assigned a job and reset their variables
 end)
