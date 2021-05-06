@@ -2,6 +2,8 @@
 
 Pickup a landscaping truck and go to public green spaces around the city to perform landscaping and grounds-keeping tasks like cutting hedges, mowing grass, picking up trash, etc.
 
+https://trello.com/b/Xjai0G7f/groundskeeping-landscaping
+
 ---
 
 **Required Resources**

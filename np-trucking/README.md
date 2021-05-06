@@ -2,6 +2,8 @@
 
 Travel to and cllect large loads of goods to transport and deliver to various locations around the city based on the cargo being hauled (warehouse goods, oil refinery, gas delivery, postal delivery, etc)
 
+https://trello.com/b/pnukOdlD/trucking
+
 ---
 
 **Required Resources**

@@ -1,10 +1,12 @@
 # Activity Construction
 
-Travel to assigned construction sites and complete tasks
+Travel to various commercial and residential construction sites around the city and complete the tasks available at each job site.
+
+https://trello.com/b/KZW8qW3x/construction
 
 ---
 
-**Required Resource**
+**Required Resources**
 https://github.com/mkafrin/PolyZone
 
 ---

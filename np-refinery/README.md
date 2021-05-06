@@ -2,6 +2,8 @@
 
 Travel to assigned "oil horse" pumps and oil "well heads" to take readings and make adjustments to the flow or calibrate different systems/mixtures (by adjusting valves or ui based sliders to be within acceptable ranges).
 
+https://trello.com/b/avHB8Qr4/oil-gas-refinery
+
 ---
 
 **Required Resources**

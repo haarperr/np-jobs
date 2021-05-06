@@ -2,6 +2,8 @@
 
 Travel to assigned farms to kill and transport livestock to slaughterhouses to then process them down at the slaughterhouse or slucking bell.
 
+https://trello.com/b/1fdRPTZi/slaughterhouse
+
 ---
 
 **Required Resources**
