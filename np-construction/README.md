@@ -45,4 +45,5 @@ PolyZones - https://github.com/mkafrin/PolyZone
 
 # Credits
 ---
-* Credit to [AstroNaught](https://github.com/cobya) - I used his np-activity boilerplate to test exposed NP functions.
+* Credit to [AstroNaught](https://github.com/cobya) for his np-activity boilerplate to test the exposed NP functions.
+* Thanks to [Sinncere](https://github.com/VoXzE) for nswering questions and suggesting natives.
