@@ -1,47 +1,52 @@
 local tool = nil
 
-function givePlayerHammer(ped)
-	tool = CreateObject(GetHashKey("prop_tool_hammer"), 0, 0, 0, true, true, true) 
-	AttachEntityToEntity(tool, ped, GetPedBoneIndex(ped, 28422), 0.0, -0.06, -0.04, -102.0, 177.0, -12.0, true, true, false, true, false, true)
-end
+-- function givePlayerHammer(ped)
+-- 	tool = CreateObject(GetHashKey("prop_tool_hammer"), 0, 0, 0, true, true, true) 
+-- 	AttachEntityToEntity(tool, ped, GetPedBoneIndex(ped, 28422), 0.0, -0.06, -0.04, -102.0, 177.0, -12.0, true, true, false, true, false, true)
+-- end
 
-function givePlayerHandSaw(ped)
-	tool = CreateObject(GetHashKey("prop_tool_consaw"), 0, 0, 0, true, true, true) 
-	AttachEntityToEntity(tool, ped, GetPedBoneIndex(ped, 28422), 0.0, -0.06, -0.04, -102.0, 177.0, -12.0, true, true, false, true, false, true)
-end
+-- function givePlayerHandSaw(ped)
+-- 	tool = CreateObject(GetHashKey("prop_tool_consaw"), 0, 0, 0, true, true, true) 
+-- 	AttachEntityToEntity(tool, ped, GetPedBoneIndex(ped, 28422), 0.0, -0.06, -0.04, -102.0, 177.0, -12.0, true, true, false, true, false, true)
+-- end
 
-function givePlayerBroom(ped)
-	tool = CreateObject(GetHashKey("prop_tool_broom"), 0, 0, 0, true, true, true) 
-	AttachEntityToEntity(tool, ped, GetPedBoneIndex(ped, 28422), 0.0, -0.06, -0.04, -102.0, 177.0, -12.0, true, true, false, true, false, true)
-end
+-- function givePlayerBroom(ped)
+-- 	tool = CreateObject(GetHashKey("prop_tool_broom"), 0, 0, 0, true, true, true) 
+-- 	AttachEntityToEntity(tool, ped, GetPedBoneIndex(ped, 28422), 0.0, -0.06, -0.04, -102.0, 177.0, -12.0, true, true, false, true, false, true)
+-- end
 
-function givePlayerTorch(ped)
-	tool = CreateObject(GetHashKey("prop_tool_blowtorch"), 0, 0, 0, true, true, true) 
-	AttachEntityToEntity(tool, ped, GetPedBoneIndex(ped, 28422), 0.0, -0.06, -0.04, -102.0, 177.0, -12.0, true, true, false, true, false, true)
-end
+-- function givePlayerTorch(ped)
+-- 	tool = CreateObject(GetHashKey("prop_tool_blowtorch"), 0, 0, 0, true, true, true) 
+-- 	AttachEntityToEntity(tool, ped, GetPedBoneIndex(ped, 28422), 0.0, -0.06, -0.04, -102.0, 177.0, -12.0, true, true, false, true, false, true)
+-- end
 
-function givePlayerDrill(ped)
-	tool = CreateObject(GetHashKey("prop_tool_drill"), 0, 0, 0, true, true, true) 
-	AttachEntityToEntity(tool, ped, GetPedBoneIndex(ped, 28422), 0.0, -0.06, -0.04, -102.0, 177.0, -12.0, true, true, false, true, false, true)
-end
+-- function givePlayerDrill(ped)
+-- 	tool = CreateObject(GetHashKey("prop_tool_drill"), 0, 0, 0, true, true, true) 
+-- 	AttachEntityToEntity(tool, ped, GetPedBoneIndex(ped, 28422), 0.0, -0.06, -0.04, -102.0, 177.0, -12.0, true, true, false, true, false, true)
+-- end
 
-function givePlayerNailgun(ped)
-	tool = CreateObject(GetHashKey("prop_tool_nailgun"), 0, 0, 0, true, true, true) 
-	AttachEntityToEntity(tool, ped, GetPedBoneIndex(ped, 28422), 0.0, -0.06, -0.04, -102.0, 177.0, -12.0, true, true, false, true, false, true)
-end
+-- function givePlayerNailgun(ped)
+-- 	tool = CreateObject(GetHashKey("prop_tool_nailgun"), 0, 0, 0, true, true, true) 
+-- 	AttachEntityToEntity(tool, ped, GetPedBoneIndex(ped, 28422), 0.0, -0.06, -0.04, -102.0, 177.0, -12.0, true, true, false, true, false, true)
+-- end
 
-function givePlayerJackhammer(ped)
-	tool = CreateObject(GetHashKey("prop_tool_jackham"), 0, 0, 0, true, true, true) 
-	AttachEntityToEntity(tool, ped, GetPedBoneIndex(ped, 28422), 0.0, -0.06, -0.04, -102.0, 177.0, -12.0, true, true, false, true, false, true)
-end
+-- function givePlayerJackhammer(ped)
+-- 	tool = CreateObject(GetHashKey("prop_tool_jackham"), 0, 0, 0, true, true, true) 
+-- 	AttachEntityToEntity(tool, ped, GetPedBoneIndex(ped, 28422), 0.0, -0.06, -0.04, -102.0, 177.0, -12.0, true, true, false, true, false, true)
+-- end
 
-function givePlayerPliers(ped)
-	tool = CreateObject(GetHashKey("prop_tool_pliers"), 0, 0, 0, true, true, true) 
-	AttachEntityToEntity(tool, ped, GetPedBoneIndex(ped, 28422), 0.0, -0.06, -0.04, -102.0, 177.0, -12.0, true, true, false, true, false, true)
-end
+-- function givePlayerPliers(ped)
+-- 	tool = CreateObject(GetHashKey("prop_tool_pliers"), 0, 0, 0, true, true, true) 
+-- 	AttachEntityToEntity(tool, ped, GetPedBoneIndex(ped, 28422), 0.0, -0.06, -0.04, -102.0, 177.0, -12.0, true, true, false, true, false, true)
+-- end
 
-function givePlayerPickaxe(ped)
-	tool = CreateObject(GetHashKey("prop_tool_pickaxe"), 0, 0, 0, true, true, true) 
+-- function givePlayerPickaxe(ped)
+-- 	tool = CreateObject(GetHashKey("prop_tool_pickaxe"), 0, 0, 0, true, true, true) 
+-- 	AttachEntityToEntity(tool, ped, GetPedBoneIndex(ped, 28422), 0.0, -0.06, -0.04, -102.0, 177.0, -12.0, true, true, false, true, false, true)
+-- end
+
+function givePlayerTool(ped, toolName)
+	tool = CreateObject(GetHashKey(toolName), 0, 0, 0, true, true, true) 
 	AttachEntityToEntity(tool, ped, GetPedBoneIndex(ped, 28422), 0.0, -0.06, -0.04, -102.0, 177.0, -12.0, true, true, false, true, false, true)
 end
 
@@ -101,22 +106,21 @@ function startTaskAnimation(zone, ped, task, requiredHits, source)
 				Citizen.Wait(1)
 			end
 			
-			TaskPlayAnim(ped, "melee@large_wpn@streamed_core", "ground_attack_on_spot", 8.0, 8.0, -1, 80, 0, 0, 0, 0)
+			TaskPlayAnim(ped, "melee@large_wpn@streamed_core", "ground_attack_on_spot", 8.0, 8.0, -1, 80, 0, 0, 0, 0) -- TODO: Make this configurable value?
 	
 			
 			-- Just started animation so give the player the tool
 			if hitsDone == 0 then
-				-- TODO: Check task and get proper tool based on task???
-				givePlayerPickaxe(ped)
+				givePlayerTool(ped, task.tool)
 			end
 	
-			Citizen.Wait(2500)
+			Citizen.Wait(2500) -- TODO: Make this configurable value?
 			ClearPedTasks(ped)
 			hitsDone = hitsDone + 1
 	
 			if hitsDone >= requiredHits then
 				removePlayerTool()
-				Citizen.Wait(250)
+				Citizen.Wait(250) -- TODO: Make this configurable value?
 				TriggerServerEvent("np-construction:completedTask", zone, task, source)
 				break
 			end  

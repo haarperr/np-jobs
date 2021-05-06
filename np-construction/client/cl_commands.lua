@@ -52,4 +52,6 @@ RegisterCommand("gen_coords", function(source, args)
 	local playerPed = GetPlayerPed(-1)
 	TriggerServerEvent("np-construction:genCoords", GetEntityCoords(playerPed))
 end, false)
+-- map the command to a key
+RegisterKeyMapping('gen_coords', 'Generate vector 3 coordinates', 'keyboard', 'u')
 -- NOTE: end note

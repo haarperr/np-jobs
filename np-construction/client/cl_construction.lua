@@ -125,12 +125,13 @@ AddEventHandler("np-construction:beginTask", function(zone, task, requiredHits, 
 	isCurrentlyWorking = true
 
 	if Config.useNoPixelExports then
+		--exports["np-inventory"]:AttachPropAndPlayAnimation() -- NOTE: Replace with proper export for attaching prop and playing animation
 		exports["np-activities"]:taskInProgress(activityName, playerServerId, task.id, task.name)
 	else
+		-- TODO: Check task and get proper animation based on object model being interacted with???
+		startTaskAnimation(zone, GetPlayerPed(-1), task, requiredHits, source)
 		notifyPlayer('~b~Started Task: '..task.name) -- Notify Player
 	end
-	-- TODO: Check task and get proper animation based on object model being interacted with???
-	startTaskAnimation(zone, GetPlayerPed(-1), task, requiredHits, source)
 end)
 
 -- Called when we are done with a task
