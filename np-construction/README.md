@@ -2,16 +2,19 @@
 
 Travel to various commercial and residential construction sites around the city and complete the tasks available at each job site.
 
+**Trello Board:**
 https://trello.com/b/KZW8qW3x/construction
 
+
+**Required Resources:**
+PolyZones - https://github.com/mkafrin/PolyZone
+
+**TODO:**
+- Configure better animations based on tool/prop being used by the task.
+
 ---
 
-**Required Resources**
-https://github.com/mkafrin/PolyZone
-
----
-
-**Screen Shots**
+**Screen Shots:**
 [![](https://i.imgur.com/DgODvWL.jpeg)](https://i.imgur.com/DgODvWL.jpeg)
 
 [![](https://i.imgur.com/4rdgbsy.jpeg)](https://i.imgur.com/4rdgbsy.jpeg)

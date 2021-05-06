@@ -125,7 +125,7 @@ AddEventHandler("np-construction:completedTask", function(assignedZone, attempte
 							-- Add to count of total zones completed
 							table.insert(playersZonesCompleted[source], assignedZone.id)
 							-- Notify Player that they are finished
-							TriggerClientEvent("np-construction:sendNotification", source, '~y~Player is done in this zone move on. ' .. playersZonesCompleted[source][1])
+							TriggerClientEvent("np-construction:sendNotification", source, '~y~Player is done in this zone move on.')
 							-- Clear Assigned Zone
 							TriggerEvent("np-construction:resetZoneTasks")
 							TriggerClientEvent("np-construction:clearAssignedZone", source)
